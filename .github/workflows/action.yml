@@ -1,0 +1,25 @@
+name: CI | npm-ui-tailwind
+
+on:
+  push:
+    branches: ['npm-ui-tailwind']
+  pull_request:
+    branches: ['npm-ui-tailwind']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build

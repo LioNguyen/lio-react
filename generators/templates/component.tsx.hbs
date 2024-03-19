@@ -1,0 +1,15 @@
+import * as S from './styles.ts'
+
+import clsx from 'clsx'
+import { FC, HTMLAttributes } from 'react'
+
+interface {{ properCase componentName }}Props extends HTMLAttributes<HTMLDivElement> {}
+
+export const {{ properCase componentName }}: FC<{{ properCase componentName }}Props> = ({ className, children, ...props }) => {
+  return (
+    <div className={clsx('{{dashCase componentName}}', className)} {...props}>
+      <h1>{{ properCase componentName }}</h1>
+      {children}
+    </div>
+  )
+}
