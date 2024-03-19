@@ -1,0 +1,6 @@
+import { lazyLoad } from '@/utils'
+
+export const {{ properCase componentName }} = lazyLoad(
+  () => import('./{{ properCase componentName }}'),
+  (module) => module.{{ properCase componentName }},
+)
