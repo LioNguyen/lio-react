@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "eslint-config-prettier",
+    "plugin:jest-dom/recommended"
+  ]
+}
