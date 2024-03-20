@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { {{ properCase componentName }} } from './{{ properCase componentName }}'
+import { Gestures } from './Gestures'
 
-describe('{{ properCase componentName }} test suite', () => {
+describe('Gestures test suite', () => {
   test('renders correctly', () => {
-    render(<{{ properCase componentName }} />)
+    render(<Gestures />)
     const headingElement = screen.getByRole("heading")
     expect(headingElement).toBeInTheDocument()
   })

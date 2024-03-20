@@ -1,10 +1,10 @@
-name: CI | Vite Boilerplate
+name: CI | Framer Motion
 
 on:
   push:
-    branches: ['boilerplate-vite']
+    branches: ['npm-framer-motion']
   pull_request:
-    branches: ['boilerplate-vite']
+    branches: ['npm-framer-motion']
 
 jobs:
   build:

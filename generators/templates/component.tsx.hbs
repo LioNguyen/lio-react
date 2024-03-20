@@ -7,8 +7,8 @@ interface {{ properCase componentName }}Props extends HTMLAttributes<HTMLDivElem
 
 export const {{ properCase componentName }}: FC<{{ properCase componentName }}Props> = ({ className, children, ...props }) => {
   return (
-    <div className={clsx(className)} {...props}>
-      {{ properCase componentName }}
+    <div className={clsx('{{dashCase componentName}}', className)} {...props}>
+      <h1>{{ properCase componentName }}</h1>
       {children}
     </div>
   )

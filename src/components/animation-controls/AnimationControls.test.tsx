@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { {{ properCase componentName }} } from './{{ properCase componentName }}'
+import { AnimationControls } from './AnimationControls'
 
-describe('{{ properCase componentName }} test suite', () => {
+describe('AnimationControls test suite', () => {
   test('renders correctly', () => {
-    render(<{{ properCase componentName }} />)
+    render(<AnimationControls />)
     const headingElement = screen.getByRole("heading")
     expect(headingElement).toBeInTheDocument()
   })
