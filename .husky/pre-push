@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# cd ./react-testing/create-react-app && npm test -- --watchAll=false
+
+# Run test to make sure all pass before pushing code
+npm test -- --watchAll=false

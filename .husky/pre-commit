@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+#cd ./react-testing/create-react-app && yarn lint && yarn format
+
+# Run eslint & format before committing code
+npx lint-staged
