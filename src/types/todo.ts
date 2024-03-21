@@ -1,4 +1,4 @@
-export interface Todo {
+export interface TodoType {
   checked: boolean
   title: string
   description: string

@@ -1,4 +1,4 @@
-import { Todo } from '@/types'
+import { TodoType } from '@/types'
 import axios from 'axios'
 
 export const API_END_POINT = {
@@ -27,13 +27,17 @@ export const createAxios = () => {
 }
 
 export const getTodosIds = async () => {
-  const res = await createAxios().get<Todo[]>(API_END_POINT.TODOS)
+  const res = await createAxios().get<TodoType[]>(API_END_POINT.TODOS)
 
   return res.data.map((todo) => todo.id)
 }
 
 export const getTodo = async (id: number) => {
-  const res = await createAxios().get(`${API_END_POINT.TODOS}/${id}`)
+  const res = await createAxios().get<TodoType>(`${API_END_POINT.TODOS}/${id}`)
 
   return res.data
+}
+
+export const createTodo = async (data: TodoType) => {
+  await createAxios().post(API_END_POINT.TODOS, data)
 }

@@ -1,14 +1,14 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
 import { getTodosIds, getTodo } from './api'
 
-export const useTodoIds = () => {
+export function useTodoIds() {
   return useQuery({
     queryKey: ['todos'],
     queryFn: getTodosIds,
   })
 }
 
-export const useTodos = (ids: (number | undefined)[] | undefined) => {
+export function useTodos(ids: (number | undefined)[] | undefined) {
   return useQueries({
     queries: (ids ?? []).map((id) => {
       return {
