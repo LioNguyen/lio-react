@@ -1,10 +1,10 @@
-name: CI | Vite Boilerplate
+name: CI | React Query
 
 on:
   push:
-    branches: ['boilerplate-vite']
+    branches: ['npm-react-query']
   pull_request:
-    branches: ['boilerplate-vite']
+    branches: ['npm-react-query']
 
 jobs:
   build:

@@ -3,15 +3,16 @@ module.exports = {
   env: { browser: true, es2020: true },
   extends: [
     'eslint:recommended',
+    'eslint-config-prettier',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     // eslint for test
     'plugin:jest-dom/recommended',
-    'eslint-config-prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'jest-dom'],
+  plugins: ['react-refresh', 'jest-dom', '@tanstack/query'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',

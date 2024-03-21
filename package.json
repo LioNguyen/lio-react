@@ -16,13 +16,17 @@
     "test:coverage": "vitest --watch --coverage"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.28.4",
+    "@tanstack/react-query-devtools": "^5.28.4",
     "axios": "^1.6.8",
     "clsx": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.1",
     "sass": "^1.72.0"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.27.7",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@types/node": "^20.11.29",
