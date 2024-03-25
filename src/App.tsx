@@ -1,3 +1,4 @@
+import { Practice } from './components/practice'
 import { Todo } from './components/todo'
 
 function App() {
@@ -5,6 +6,7 @@ function App() {
     <>
       <h1>Home</h1>
       <Todo />
+      <Practice />
     </>
   )
 }

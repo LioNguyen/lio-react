@@ -1,5 +1,5 @@
 import { useQueries, useQuery } from '@tanstack/react-query'
-import { getTodosIds, getTodo } from './api'
+import { getTodosIds, getTodo, getPosts, getPost } from './api'
 
 export function useTodoIds() {
   return useQuery({
@@ -14,6 +14,21 @@ export function useTodos(ids: (number | undefined)[] | undefined) {
       return {
         queryKey: ['todo', { id }],
         queryFn: () => getTodo(id!),
+      }
+    }),
+  })
+}
+
+export function usePosts() {
+  return useQuery({ queryKey: ['posts'], queryFn: getPosts })
+}
+
+export function usePost(postList: any[]) {
+  return useQueries({
+    queries: (postList ?? []).map((post) => {
+      return {
+        queryKey: ['post', [post.id]],
+        queryFn: () => getPost(post.id),
       }
     }),
   })

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { createTodo } from './api'
+import { createTodo, patchPost } from './api'
 import { TodoType } from '@/types'
 
 export function useCreateTodo() {
@@ -18,6 +18,21 @@ export function useCreateTodo() {
         console.log(error)
       } else {
         await queryClient.invalidateQueries({ queryKey: ['todos'] })
+      }
+    },
+  })
+}
+
+export function usePatchPost() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: any) => patchPost(data),
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ['posts'] })
       }
     },
   })
