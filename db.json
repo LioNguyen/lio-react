@@ -2,45 +2,15 @@
   "users": [
     {
       "id": 0,
-      "username": "happi",
-      "firstName": "abc",
-      "lastName": "xyz",
-      "email": "happi.Kemmer@hotmail.com"
+      "username": "lionguyen"
     },
     {
       "id": 1,
-      "username": "happi",
-      "firstName": "123",
-      "lastName": "xyz",
-      "email": "happi.Kemmer@hotmail.com"
+      "username": "nguyenbui"
     },
     {
       "id": 2,
-      "username": "happi456",
-      "firstName": "456",
-      "lastName": "xyz",
-      "email": "happi.Kemmer@hotmail.com"
-    },
-    {
-      "id": "84425c0a-046d-4db8-89e5-4815297de35f",
-      "username": "ertyui",
-      "firstName": "ertyu",
-      "lastName": "cvbn",
-      "email": "56789"
-    },
-    {
-      "id": "119092b4-b415-4189-88c5-106d5ad477f8",
-      "username": "24353",
-      "firstName": "ertyetweru",
-      "lastName": "cvbnlyul",
-      "email": "adsfag"
-    },
-    {
-      "id": "ec43a77f-5f97-4241-a1e6-12e0d920e5ed",
-      "username": "lionguyen",
-      "firstName": "lio",
-      "lastName": "nguyen",
-      "email": "test@email"
+      "username": "happithui"
     }
   ]
 }

@@ -1,28 +1,41 @@
 import './Users.styles.scss'
 
-import { Text } from '@chakra-ui/react'
 import clsx from 'clsx'
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, useEffect, useState } from 'react'
+import { Button, Heading } from '@chakra-ui/react'
 
 import { UserCard } from '@/components/molecules/user-card'
 import { UserForm } from '@/components/molecules/user-form'
 import { useGetUsers } from '@/services/users'
+import { useGlobalStore } from '@/store/globalStore'
+import { UserType } from '@/types'
 
 interface UsersProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Users: FC<UsersProps> = ({ className, ...props }) => {
-  const { data, isLoading } = useGetUsers()
+  const [getUser, setGetUser] = useState(false)
+  const { data, isLoading } = useGetUsers({ enabled: getUser })
 
-  if (isLoading) {
-    return <Text>Loading...</Text>
-  }
+  const { showLoading, hideLoading } = useGlobalStore()
+
+  useEffect(() => {
+    if (isLoading) {
+      return showLoading()
+    } else {
+      setTimeout(() => {
+        hideLoading()
+      }, 500)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading])
 
   return (
     <div className={clsx('users', className)} {...props}>
-      <h1>Users</h1>
+      <Heading as="h3">Users</Heading>
+      <Button onClick={() => setGetUser(!getUser)}>Toggle User List</Button>
       <UserForm />
-      {(data ?? []).map((user: any) => (
-        <UserCard key={user.id} email={user.email} username={user.username} />
+      {(data ?? []).map((user: UserType, index) => (
+        <UserCard key={user.id} index={index} user={user} />
       ))}
     </div>
   )
