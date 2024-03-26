@@ -1,0 +1,9 @@
+.drag-drop-file {
+  .drop-zone {
+    background-color: rgba(0, 0, 0, 0);
+    transition: all 0.4s;
+    &.drag-over {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}

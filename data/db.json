@@ -1,3 +1,72 @@
 {
-  "data": []
+  "users": [
+    {
+      "id": "74f61ae8-24b5-441f-99d0-85d72aa46c16",
+      "username": "Lio Nguyen"
+    },
+    {
+      "id": "d5f2f711-ea75-46ca-bab0-513b66680933",
+      "username": "Nguyen Bui"
+    },
+    {
+      "id": "18fe4239-6c84-46ba-b29d-749590d9a0ac",
+      "username": "Happi Thui"
+    },
+    {
+      "id": "5ffd8ce4-69e9-46bb-8df6-161572d31854",
+      "username": "John Doe"
+    },
+    {
+      "id": "86a5f48c-210b-4929-b711-1f49768e90cc",
+      "username": "John Doe"
+    },
+    {
+      "id": "d63432a5-cf44-4c59-b57a-182c2f9e9b22",
+      "username": "John Doe"
+    },
+    {
+      "id": "ad3888da-a646-4907-a9cf-53af32358959",
+      "username": "John Doe"
+    },
+    {
+      "id": "1d8f8da9-a597-45c0-bd24-c5ffe591a329",
+      "username": "John Doe"
+    },
+    {
+      "id": "2f470ee9-6b4a-4315-a29c-ce6d84d36487",
+      "username": "Nghi Nguyen"
+    },
+    {
+      "id": "1879bf8f-999d-4ce4-a381-b22e84ade05d",
+      "username": "Nghi Nguyen"
+    },
+    {
+      "id": "545cdb03-a534-411e-a634-e1e7fe443837",
+      "username": "Nghi Nguyen"
+    },
+    {
+      "id": "f41d1bbf-256a-4fef-ae6d-84e8d51caa02",
+      "username": "Nghi Nguyen"
+    }
+  ],
+  "files": [
+    {
+      "id": "f41d1bbf-256a-4fef-ae6d-84e8d51caa02",
+      "name": "file1",
+      "size": 100,
+      "owner": "Nghi Nguyen"
+    },
+    {
+      "id": "f41d1bbf-256a-4fef-ae6d-84e8d51caa03",
+      "name": "file2",
+      "size": 200,
+      "owner": "Nghi Nguyen"
+    },
+    {
+      "id": "f41d1bbf-256a-4fef-ae6d-84e8d51caa04",
+      "name": "file3",
+      "size": 300,
+      "owner": "Nghi Nguyen"
+    }
+  ]
 }
