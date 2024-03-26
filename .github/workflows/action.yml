@@ -2,9 +2,9 @@ name: CI | Vite Boilerplate
 
 on:
   push:
-    branches: ['boilerplate-vite']
+    branches: ['react-state-management-zustand-react-query']
   pull_request:
-    branches: ['boilerplate-vite']
+    branches: ['react-state-management-zustand-react-query']
 
 jobs:
   build:
@@ -18,8 +18,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'yarn'
-      - run: yarn
-      - run: yarn lint
-      - run: yarn test
-      - run: yarn build
+          cache: 'npm'
+      - run: npm i
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run build
