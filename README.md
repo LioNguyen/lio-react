@@ -25,8 +25,10 @@
 
 - [React Query | Official Document](https://tanstack.com/query/latest/docs/framework/react/installation)
 - [React Query Tutorial V5 Tutorial | Youtube](https://youtu.be/3e-higRXoaM?si=-ETaO107OqGvjhLI)
+- [React Query in Class Component | Code Sandbox](https://codesandbox.io/p/sandbox/react-query-with-class-component-jrdy9?file=%2Fsrc%2Fuser-list-direct-client.tsx)
 - [Fake API | Official Document](https://jsonplaceholder.typicode.com/guide/)
 - [Fake API | Example](https://jsonplaceholder.typicode.com/photos?_start=1&_limit=5)
+- [ChakrUI with react-hook-form | Official Document](https://chakra-ui.com/getting-started/with-hook-form)
 
 ## 1.2 What can you learn?
 
@@ -76,38 +78,34 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ### 3.1.1 Create function to get API
 
 ```js
-// src/services/api.ts
+// src/services/users/usersApi.ts
 
-export const getTodosIds = async () => {
-  const res = await createAxios().get<TodoType[]>(API_END_POINT.TODOS, {
-    params: {
-      _start: 0,
-      _limit: 10,
-    },
-  })
+export class UsersApi {
+  public async getUsers() {
+    const res = await axios.get<User[]>(USERS_API_ENDPOINT.users)
 
-  return res.data.map((todo) => todo.id)
-}
-
-export const getTodo = async (id: number) => {
-  const res = await createAxios().get<TodoType>(`${API_END_POINT.TODOS}/${id}`)
-
-  return res.data
+    return res.data
+  }
+  public async createUser(data: User) {
+    await axios.post(USERS_API_ENDPOINT.users, data)
+  }
 }
 ```
 
 ### 3.1.2 Create hook to get data from API?
 
 ```js
-// src/services/queries.ts
+// src/services/users/queries.ts
 
-import { useQueries, useQuery } from '@tanstack/react-query'
-import { getTodosIds } from './api'
+import { useQuery } from '@tanstack/react-query'
+import { UsersApi } from './usersApi'
 
-export function useTodoIds() {
+const userApi = new UsersApi()
+
+export function useGetUsers() {
   return useQuery({
-    queryKey: ['todos'],
-    queryFn: getTodosIds,
+    queryKey: ['users'],
+    queryFn: userApi.getUsers,
   })
 }
 ```
@@ -135,30 +133,22 @@ export function useTodos(ids: (number | undefined)[] | undefined) {
 ### 3.1.4 How to use hook?
 
 ```js
-// src/components/todo/Todo.tsx
+// src/components/organisms/users/Users.tsx
 
-export const Todo: FC<TodoProps> = ({ className, ...props }) => {
-  const globalFetching = useIsFetching()
-  const {
-    data: idList,
-    fetchStatus,
-    isFetching,
-    isError,
-    status,
-  } = useTodoIds()
-  const todosQueries = useTodos(idList)
+export const Users: FC<UsersProps> = ({ className, ...props }) => {
+  const { data, isLoading } = useGetUsers()
 
-  if (isFetching) {
-    return <span>Fetching...</span>
-  }
-
-  if (isError) {
-    return <span>There is an error</span>
+  if (isLoading) {
+    return <Text>Loading...</Text>
   }
 
   return (
-    <div className={clsx('todo', className)} {...props}>
-      // Your code
+    <div className={clsx('users', className)} {...props}>
+      <h1>Users</h1>
+      <UserForm />
+      {(data ?? []).map((user: any) => (
+        <UserCard key={user.id} email={user.email} username={user.username} />
+      ))}
     </div>
   )
 }
@@ -169,38 +159,32 @@ export const Todo: FC<TodoProps> = ({ className, ...props }) => {
 ### 3.2.1 Create function to handle API
 
 ```js
-// src/services/api.ts
+// src/services/users/usersApi.ts
 
-export const createTodo = async (data: TodoType) => {
-  await createAxios().post(API_END_POINT.TODOS, data)
+export class UsersApi {
+  public async createUser(data: User) {
+    await axios.post(USERS_API_ENDPOINT.users, data)
+  }
 }
 ```
 
 ### 3.2.2 Create function to mutate data
 
 ```js
-// src/services/mutations.ts
+// src/services/users/mutations.ts
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
-import { createTodo } from './api'
-import { TodoType } from '@/types'
-
-export function useCreateTodo() {
+export function useCreateUser() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: TodoType) => createTodo(data),
-    onMutate: console.log,
-    onSuccess: console.log,
-    onError: console.log,
+    mutationFn: (data: User) => userApi.createUser(data),
 
-    // This property indicates actions after mutating data is completed
+    // After post new user, refetch to get new user list
     onSettled: async (_, error) => {
       if (error) {
-        console.log(error)
+        // your code
       } else {
-        await queryClient.invalidateQueries({ queryKey: ['todos'] })
+        await queryClient.invalidateQueries({ queryKey: ['users'] })
       }
     },
   })
@@ -210,22 +194,38 @@ export function useCreateTodo() {
 ### 3.2.3 How to use hook?
 
 ```js
-// src/components/todo/Todo.tsx
+// src/components/molecules/user-form/UserForm.tsx
 
-export const Todo: FC<TodoProps> = ({ className, ...props }) => {
-  const createTodoMutation = useCreateTodo()
+export const UserForm: FC<UserFormProps> = ({ className, ...props }) => {
+  const { handleSubmit, register } = useForm()
+  const createUser = useCreateUser()
 
-  const { register, handleSubmit } = useForm<TodoType>()
+  const onSubmit = (values: FieldValues) => {
+    const { username, firstName, lastName, email } = values
 
-  const handleCreateTodoSubmit: SubmitHandler<TodoType> = (data) => {
-    createTodoMutation.mutate(data)
+    createUser.mutate({ id: uuidv4(), username, firstName, lastName, email })
   }
 
-
   return (
-    <div className={clsx('todo', className)} {...props} onClick={handleCreateTodoSubmit}>
-      // Your code
-    </div>
+    <form className={clsx('form', className)} onSubmit={handleSubmit(onSubmit)}>
+      <FormControl {...props}>
+        <Input id="username" placeholder="username" {...register('username')} />
+        <Input
+          id="firstName"
+          placeholder="First name"
+          {...register('firstName')}
+        />
+        <Input
+          id="lastName"
+          placeholder="Last name"
+          {...register('lastName')}
+        />
+        <Input id="email" placeholder="email" {...register('email')} />
+        <Button mt={4} colorScheme="teal" isLoading={false} type="submit">
+          Submit
+        </Button>
+      </FormControl>
+    </form>
   )
 }
 ```

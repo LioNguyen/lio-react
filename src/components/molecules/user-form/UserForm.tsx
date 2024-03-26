@@ -1,0 +1,43 @@
+import { useCreateUser } from '@/services/users'
+import './UserForm.styles.scss'
+
+import { Button, FormControl, Input } from '@chakra-ui/react'
+import clsx from 'clsx'
+import { FC, HTMLAttributes } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+import { v4 as uuidv4 } from 'uuid'
+
+interface UserFormProps extends HTMLAttributes<HTMLDivElement> {}
+
+export const UserForm: FC<UserFormProps> = ({ className, ...props }) => {
+  const { handleSubmit, register } = useForm()
+  const createUser = useCreateUser()
+
+  const onSubmit = (values: FieldValues) => {
+    const { username, firstName, lastName, email } = values
+
+    createUser.mutate({ id: uuidv4(), username, firstName, lastName, email })
+  }
+
+  return (
+    <form className={clsx('form', className)} onSubmit={handleSubmit(onSubmit)}>
+      <FormControl {...props}>
+        <Input id="username" placeholder="username" {...register('username')} />
+        <Input
+          id="firstName"
+          placeholder="First name"
+          {...register('firstName')}
+        />
+        <Input
+          id="lastName"
+          placeholder="Last name"
+          {...register('lastName')}
+        />
+        <Input id="email" placeholder="email" {...register('email')} />
+        <Button mt={4} colorScheme="teal" isLoading={false} type="submit">
+          Submit
+        </Button>
+      </FormControl>
+    </form>
+  )
+}

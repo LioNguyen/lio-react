@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const API_END_POINT = {}
+export const API_ENDPOINT = {}
 
 export const createAxios = () => {
   const axiosInstance = axios.create({
