@@ -7,7 +7,7 @@ export const createAxios = () => {
     // headers: {
     //   Authorization: `Bearer `,
     // },
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: import.meta.env.VITE_BASE_API_URL,
   })
 
   axiosInstance.interceptors.response.use(

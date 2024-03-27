@@ -11,6 +11,7 @@
     - [3.2.1 Create RootLayout](#321-create-rootlayout)
     - [3.2.2 Create routes](#322-create-routes)
     - [3.2.3 Create nested routes](#323-create-nested-routes)
+    - [3.2.4 How to load data from API before navigating to specific path?](#324-how-to-load-data-from-api-before-navigating-to-specific-path)
 
 # 1. Overview
 
@@ -22,7 +23,7 @@
 
 ## 1.2 What can you learn?
 
-- [Init project](#21-init-project-with-vite) with Vite
+- How to use react-router-dom
 
 # 2. How to init react-router-dom?
 
@@ -130,6 +131,48 @@ function App() {
         <Route path="help" element={<HelpLayout />}>
           <Route path="contact" element={<Contact />} />
           <Route path="faq" element={<Faq />} />
+        </Route>
+
+        <Route path="*" element={<NotFound />} />
+      </Route>,
+    ),
+  )
+  return <RouterProvider router={router} />
+}
+```
+
+### 3.2.4 How to load data from API before navigating to specific path?
+
+- Use `loader` prop and pass a Promise to it
+
+```js
+// src/services/careersApi.ts
+
+export class CareersApi {
+  public async getCareers() {
+    const res = await axios.get(CAREERS_API_ENDPOINT.careers)
+
+    return res.data
+  }
+}
+```
+
+```js
+// src/App.tsx
+
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="help" element={<HelpLayout />}>
+          <Route path="contact" element={<Contact />} />
+          <Route path="faq" element={<Faq />} />
+        </Route>
+
+        <Route path="/careers" element={<CareersLayout />}>
+          <Route index element={<Careers />} loader={careersApi.getCareers} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
