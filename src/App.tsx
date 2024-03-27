@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom'
 
 import { RootLayout } from '@/components/templates/root-layout'
-import { Dashboard } from './components/pages/dashboard'
-import { Create } from './components/pages/create'
-import { Profile } from './components/pages/profile'
+import { Dashboard } from '@/components/pages/dashboard'
+import { Create } from '@/components/pages/create'
+import { Profile } from '@/components/pages/profile'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
