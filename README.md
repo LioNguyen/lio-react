@@ -6,14 +6,14 @@
 - [2. How to init Chakra?](#2-how-to-init-chakra)
   - [2.1 Install library](#21-install-library)
   - [2.2 Config \& Setup](#22-config--setup)
-    - [2.2.1 tsconfig.json](#221-tsconfigjson)
-    - [2.2.2 vite.config.ts](#222-viteconfigts)
+    - [2.2.1 main.tsx](#221-maintsx)
 
 # 1. Overview
 
 ## 1.1 Resources
 
 - [Chakra UI | Official Document](https://chakra-ui.com/getting-started)
+- [Chakra Icons | Official Document](https://chakra-ui.com/docs/components/icon/usage#all-icons)
 - [Chakra UI Tutorial | Youtube](https://www.youtube.com/watch?v=iXsM6NkEmFc&list=PL4cUxeGkcC9hcnIeryurNMMcGBHp7AYlP&ab_channel=NetNinja)
 
 ## 1.2 What does this boilerplate have?
@@ -30,44 +30,28 @@
 
 ```bash
 npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
+npm i @chakra-ui/icons
 ```
 
 ## 2.2 Config & Setup
 
-### 2.2.1 tsconfig.json
+### 2.2.1 main.tsx
 
-- Setup path aliases
-
-```json
-{
-  "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
-}
-```
-
-### 2.2.2 vite.config.ts
-
-- Setup path aliases
+- Create provider
 
 ```js
-import react from '@vitejs/plugin-react'
-import * as path from 'path'
-import { defineConfig } from 'vite'
+// src/main.tsx
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: { '@': path.resolve(__dirname, './src/') },
-  },
+import ReactDOM from 'react-dom/client'
 
-  // or
-  // resolve: {
-  //   alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
-  // },
-})
+import App from '@/App.tsx'
+import '@/index.scss'
+import { ChakraProvider } from '@chakra-ui/react'
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <ChakraProvider>
+    <App />
+  </ChakraProvider>
+)
+
 ```
