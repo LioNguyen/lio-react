@@ -16,6 +16,7 @@
     - [3.3.5 How to get route parameters?](#335-how-to-get-route-parameters)
       - [3.3.5.1 Get params in component via `useParams hook`](#3351-get-params-in-component-via-useparams-hook)
       - [3.3.5.2 Get params in function via `function arguments`](#3352-get-params-in-function-via-function-arguments)
+    - [3.3.6 How to handle error when loading element?](#336-how-to-handle-error-when-loading-element)
 
 # 1. Overview
 
@@ -41,7 +42,11 @@ npm install react-router-dom
 
 ## 3.1 Overview
 
-- Some hooks: `useLoaderData, useParams`
+- Create router (old way): `<BrowserRouter />, <Routes />, <Route />`
+- Create router (new way):
+  - Component: `<RouterProvider />, <Route />, <Outlet />`
+  - Method: `createBrowserRouter(), createRoutesFromElements()`
+- Some hooks: `useLoaderData, useParams, useRouteError`
 
 ## 3.2 How to create router with `BrowserRouter`?
 
@@ -254,5 +259,52 @@ export class CareersApi {
 
     return res.data
   }
+}
+```
+
+### 3.3.6 How to handle error when loading element?
+
+- Use `errorElement` prop
+
+```js
+// src/components/pages/careers-error/CareersError.tsx
+
+export const CareersError: FC<CareersErrorProps> = () => {
+  const error: any = useRouteError()
+
+  return (
+    <div className="careers-error">
+      <h2>Error</h2>
+      <p>{error.message}</p>
+      <Link to="/">Back to the Homepage</Link>
+    </div>
+  )
+}
+```
+
+```js
+// src/App.tsx
+
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        // Other routes
+        <Route
+          path="/careers"
+          element={<CareersLayout />}
+          errorElement={<CareersError />}
+        >
+          <Route index element={<Careers />} loader={careersApi.getCareers} />
+          <Route
+            path=":id"
+            element={<CareerDetails />}
+            loader={careersApi.getCareerDetails}
+          />
+        </Route>
+      </Route>,
+    ),
+  )
+  return <RouterProvider router={router} />
 }
 ```

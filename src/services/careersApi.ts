@@ -9,15 +9,31 @@ export const CAREERS_API_ENDPOINT = {
 
 export class CareersApi {
   public async getCareers() {
-    const res = await axios.get(CAREERS_API_ENDPOINT.careers)
+    try {
+      const res = await axios.get(CAREERS_API_ENDPOINT.careers)
 
-    return res.data
+      if (!res.data) {
+        throw new Error('Could not fetch career data')
+      }
+
+      return res.data
+    } catch (error) {
+      throw new Error('Could not fetch career data')
+    }
   }
   public async getCareerDetails({ params }: CareerDetailApiType) {
-    const { id } = params
+    try {
+      const { id } = params
 
-    const res = await axios.get(`${CAREERS_API_ENDPOINT.careers}/${id}`)
+      const res = await axios.get(`${CAREERS_API_ENDPOINT.careers}/${id}`)
 
-    return res.data
+      if (!res.data) {
+        throw new Error('Could not find that career.')
+      }
+
+      return res.data
+    } catch (error) {
+      throw Error('Could not find that career.')
+    }
   }
 }

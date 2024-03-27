@@ -16,6 +16,7 @@ import { CareersLayout } from '@/components/templates/careers-layout'
 import { HelpLayout } from '@/components/templates/help-layout'
 import { RootLayout } from '@/components/templates/root-layout'
 import { CareersApi } from '@/services/careersApi'
+import { CareersError } from '@/components/pages/careers-error'
 
 function App() {
   const careersApi = new CareersApi()
@@ -30,7 +31,11 @@ function App() {
           <Route path="faq" element={<Faq />} />
         </Route>
 
-        <Route path="/careers" element={<CareersLayout />}>
+        <Route
+          path="/careers"
+          element={<CareersLayout />}
+          errorElement={<CareersError />}
+        >
           <Route index element={<Careers />} loader={careersApi.getCareers} />
           <Route
             path=":id"
