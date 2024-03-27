@@ -1,7 +1,6 @@
 import './Navbar.styles.scss'
 
 import { FC, HTMLAttributes } from 'react'
-// import { Lesson_2 } from '../lesson-2-flex-layouts'
 import {
   Box,
   Button,

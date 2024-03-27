@@ -14,6 +14,7 @@
 ## 1.1 Resources
 
 - [Chakra UI | Official Document](https://chakra-ui.com/getting-started)
+- [Chakra UI Tutorial | Youtube](https://www.youtube.com/watch?v=iXsM6NkEmFc&list=PL4cUxeGkcC9hcnIeryurNMMcGBHp7AYlP&ab_channel=NetNinja)
 
 ## 1.2 What does this boilerplate have?
 
