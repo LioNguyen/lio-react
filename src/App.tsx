@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import { About } from '@/components/pages/about'
+import { CareerDetails } from '@/components/pages/career-details'
 import { Careers } from '@/components/pages/careers'
 import { Contact } from '@/components/pages/contact'
 import { Faq } from '@/components/pages/faq'
@@ -14,7 +15,7 @@ import { NotFound } from '@/components/pages/not-found'
 import { CareersLayout } from '@/components/templates/careers-layout'
 import { HelpLayout } from '@/components/templates/help-layout'
 import { RootLayout } from '@/components/templates/root-layout'
-import { CareersApi } from './services/careersApi'
+import { CareersApi } from '@/services/careersApi'
 
 function App() {
   const careersApi = new CareersApi()
@@ -31,6 +32,11 @@ function App() {
 
         <Route path="/careers" element={<CareersLayout />}>
           <Route index element={<Careers />} loader={careersApi.getCareers} />
+          <Route
+            path=":id"
+            element={<CareerDetails />}
+            loader={careersApi.getCareerDetails}
+          />
         </Route>
 
         <Route path="*" element={<NotFound />} />

@@ -6,12 +6,16 @@
 - [2. How to init react-router-dom?](#2-how-to-init-react-router-dom)
   - [2.1 Install library](#21-install-library)
 - [3. How to use react-router-dom?](#3-how-to-use-react-router-dom)
-  - [3.1 How to create router with `BrowserRouter`?](#31-how-to-create-router-with-browserrouter)
-  - [3.2 How to create router in new way with `RouterProvider`?](#32-how-to-create-router-in-new-way-with-routerprovider)
-    - [3.2.1 Create RootLayout](#321-create-rootlayout)
-    - [3.2.2 Create routes](#322-create-routes)
-    - [3.2.3 Create nested routes](#323-create-nested-routes)
-    - [3.2.4 How to load data from API before navigating to specific path?](#324-how-to-load-data-from-api-before-navigating-to-specific-path)
+  - [3.1 Overview](#31-overview)
+  - [3.2 How to create router with `BrowserRouter`?](#32-how-to-create-router-with-browserrouter)
+  - [3.3 How to create router in new way with `RouterProvider`?](#33-how-to-create-router-in-new-way-with-routerprovider)
+    - [3.3.1 Create RootLayout](#331-create-rootlayout)
+    - [3.3.2 Create routes](#332-create-routes)
+    - [3.3.3 Create nested routes](#333-create-nested-routes)
+    - [3.3.4 How to load data from API before navigating to specific path?](#334-how-to-load-data-from-api-before-navigating-to-specific-path)
+    - [3.3.5 How to get route parameters?](#335-how-to-get-route-parameters)
+      - [3.3.5.1 Get params in component via `useParams hook`](#3351-get-params-in-component-via-useparams-hook)
+      - [3.3.5.2 Get params in function via `function arguments`](#3352-get-params-in-function-via-function-arguments)
 
 # 1. Overview
 
@@ -35,7 +39,11 @@ npm install react-router-dom
 
 # 3. How to use react-router-dom?
 
-## 3.1 How to create router with `BrowserRouter`?
+## 3.1 Overview
+
+- Some hooks: `useLoaderData, useParams`
+
+## 3.2 How to create router with `BrowserRouter`?
 
 ```js
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom'
@@ -66,9 +74,9 @@ function App() {
 export default App
 ```
 
-## 3.2 How to create router in new way with `RouterProvider`?
+## 3.3 How to create router in new way with `RouterProvider`?
 
-### 3.2.1 Create RootLayout
+### 3.3.1 Create RootLayout
 
 - Use `<Outlet />` to render the child route's element
 
@@ -96,7 +104,7 @@ export const RootLayout: FC<RootLayoutProps> = ({ className, ...props }) => {
 }
 ```
 
-### 3.2.2 Create routes
+### 3.3.2 Create routes
 
 ```js
 // src/App.tsx
@@ -114,7 +122,7 @@ function App() {
 }
 ```
 
-### 3.2.3 Create nested routes
+### 3.3.3 Create nested routes
 
 - For nested routes, DO NOT need slash `/` before path
 - Use `path="*"` to redirect to NotFound page
@@ -141,7 +149,7 @@ function App() {
 }
 ```
 
-### 3.2.4 How to load data from API before navigating to specific path?
+### 3.3.4 How to load data from API before navigating to specific path?
 
 - Use `loader` prop and pass a Promise to it
 
@@ -164,21 +172,87 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="help" element={<HelpLayout />}>
-          <Route path="contact" element={<Contact />} />
-          <Route path="faq" element={<Faq />} />
-        </Route>
-
+        // Other routes
         <Route path="/careers" element={<CareersLayout />}>
           <Route index element={<Careers />} loader={careersApi.getCareers} />
         </Route>
-
-        <Route path="*" element={<NotFound />} />
       </Route>,
     ),
   )
   return <RouterProvider router={router} />
+}
+```
+
+### 3.3.5 How to get route parameters?
+
+- Use `:` in `path` prop to indicate params
+
+```js
+// src/App.tsx
+
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        // Other routes
+        <Route path="/careers" element={<CareersLayout />}>
+          <Route index element={<Careers />} loader={careersApi.getCareers} />
+          <Route
+            path=":id"
+            element={<CareerDetails />}
+            loader={careersApi.getCareerDetails}
+          />
+        </Route>
+      </Route>,
+    ),
+  )
+  return <RouterProvider router={router} />
+}
+```
+
+#### 3.3.5.1 Get params in component via `useParams hook`
+
+```js
+// src/components/pages/career-details/CareerDetails.tsx
+
+import { useLoaderData, useParams } from 'react-router-dom'
+
+interface CareerDetailsProps extends HTMLAttributes<HTMLDivElement> {}
+
+export const CareerDetails: FC<CareerDetailsProps> = () => {
+  const career: any = useLoaderData()
+  const { id } = useParams()
+
+  return (
+    <div className="career-details">
+      // Your code
+    </div>
+  )
+}
+```
+
+#### 3.3.5.2 Get params in function via `function arguments`
+
+```js
+// src/types/career.ts
+
+export type CareerDetailApiType = {
+  params: {
+    id?: string
+  }
+}
+```
+
+```js
+// src/services/careersApi.ts
+
+export class CareersApi {
+  public async getCareerDetails({ params }: CareerDetailApiType) {
+    const { id } = params
+
+    const res = await axios.get(`${CAREERS_API_ENDPOINT.careers}/${id}`)
+
+    return res.data
+  }
 }
 ```
