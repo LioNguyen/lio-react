@@ -1,52 +1,13 @@
-**Table of Contents | Vite Boilerplate**
+**Table of Contents | React Router**
 
 - [1. Overview](#1-overview)
   - [1.1 Resources](#11-resources)
-  - [1.2 What does this boilerplate have?](#12-what-does-this-boilerplate-have)
-- [2. How to init Vite?](#2-how-to-init-vite)
+  - [1.2 What can you learn?](#12-what-can-you-learn)
+- [2. How to init react-router-dom?](#2-how-to-init-react-router-dom)
   - [2.1 Install library](#21-install-library)
-  - [2.2 Config \& Setup](#22-config--setup)
-    - [2.2.1 tsconfig.json](#221-tsconfigjson)
-    - [2.2.2 vite.config.ts](#222-viteconfigts)
-- [3. How to setup test?](#3-how-to-setup-test)
-  - [3.1 Install library](#31-install-library)
-  - [3.2 Config \& Setup](#32-config--setup)
-    - [3.2.1 package.json](#321-packagejson)
-    - [3.2.2 vitest.setup.ts](#322-vitestsetupts)
-    - [3.2.3 vitest.config.ts](#323-vitestconfigts)
-    - [3.2.4 tsconfig.json](#324-tsconfigjson)
-    - [3.2.5 .eslintrc.cjs](#325-eslintrccjs)
-- [4. How to mock API for debug and test?](#4-how-to-mock-api-for-debug-and-test)
-  - [4.1 Install Mock Service Worker (MSW)](#41-install-mock-service-worker-msw)
-  - [4.2 Config \& Setup](#42-config--setup)
-    - [4.2.1 package.json](#421-packagejson)
-    - [4.2.2 src/mocks/handlers.ts](#422-srcmockshandlersts)
-    - [4.2.3 src/mocks/node.ts](#423-srcmocksnodets)
-    - [4.2.4 src/mocks/browser.ts](#424-srcmocksbrowserts)
-    - [4.2.5 vitest.setup.ts](#425-vitestsetupts)
-  - [4.3 How to mock API for React App?](#43-how-to-mock-api-for-react-app)
-  - [4.4 How to use MSW?](#44-how-to-use-msw)
-    - [4.4.1 Test with mock API for all tests](#441-test-with-mock-api-for-all-tests)
-    - [4.4.2 Test with mock API for only 1 test](#442-test-with-mock-api-for-only-1-test)
-- [5. How to setup Prettier?](#5-how-to-setup-prettier)
-  - [5.1 Install library](#51-install-library)
-  - [5.2 Config \& Setup](#52-config--setup)
-    - [5.2.1 package.json](#521-packagejson)
-    - [5.2.2 .eslintrc.cjs](#522-eslintrccjs)
-- [6. How to setup Husky \& lint-staged?](#6-how-to-setup-husky--lint-staged)
-  - [6.1 Install library](#61-install-library)
-  - [6.2 Config \& Setup](#62-config--setup)
-    - [6.2.1 package.json](#621-packagejson)
-    - [6.2.2 .husky/pre-commit](#622-huskypre-commit)
-- [7. How to setup Plop?](#7-how-to-setup-plop)
-  - [7.1 Install library](#71-install-library)
-  - [7.2 Config \& Setup](#72-config--setup)
-    - [7.2.1 package.json](#721-packagejson)
-    - [7.2.2 generators/actions/component.mjs](#722-generatorsactionscomponentmjs)
-    - [7.2.3 plopfile.mjs](#723-plopfilemjs)
-    - [7.2.4 settings.json](#724-settingsjson)
-- [8. How to setup Github Action?](#8-how-to-setup-github-action)
-  - [8.1 .github/workflows/action.yml](#81-githubworkflowsactionyml)
+- [3. How to use react-router-dom?](#3-how-to-use-react-router-dom)
+  - [3.1 How to create router with `BrowserRouter`?](#31-how-to-create-router-with-browserrouter)
+  - [3.2 How to create router in new way with `RouterProvider`?](#32-how-to-create-router-in-new-way-with-routerprovider)
 
 # 1. Overview
 
@@ -60,7 +21,7 @@
 
 - [Init project](#21-init-project-with-vite) with Vite
 
-# 2. How to init Vite?
+# 2. How to init react-router-dom?
 
 ## 2.1 Install library
 
@@ -68,19 +29,53 @@
 npm install react-router-dom
 ```
 
-## 2.2 Config & Setup
+# 3. How to use react-router-dom?
 
-### 2.2.1 tsconfig.json
+## 3.1 How to create router with `BrowserRouter`?
 
-- Setup path aliases
+```js
+import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom'
 
-```json
-{
-  "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
+import { About } from '@/components/pages/about'
+import { Home } from '@/components/pages/home'
+
+function App() {
+  return (
+    <BrowserRouter>
+      <header>
+        <nav>
+          <h1>Router</h1>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/about">About</NavLink>
+        </nav>
+      </header>
+      <main>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
+  )
+}
+
+export default App
+```
+
+## 3.2 How to create router in new way with `RouterProvider`?
+
+```js
+// src/App.tsx
+
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Route>,
+    ),
+  )
+  return <RouterProvider router={router} />
 }
 ```
