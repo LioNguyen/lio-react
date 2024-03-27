@@ -11,6 +11,7 @@ import { Faq } from '@/components/pages/faq'
 import { Home } from '@/components/pages/home'
 import { HelpLayout } from '@/components/templates/help-layout'
 import { RootLayout } from '@/components/templates/root-layout'
+import { NotFound } from '@/components/pages/not-found'
 
 function App() {
   const router = createBrowserRouter(
@@ -22,6 +23,8 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="faq" element={<Faq />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Route>,
     ),
   )

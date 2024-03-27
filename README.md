@@ -116,6 +116,7 @@ function App() {
 ### 3.2.3 Create nested routes
 
 - For nested routes, DO NOT need slash `/` before path
+- Use `path="*"` to redirect to NotFound page
 
 ```js
 // src/App.tsx
@@ -130,6 +131,8 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="faq" element={<Faq />} />
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Route>,
     ),
   )
