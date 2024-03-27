@@ -8,6 +8,9 @@
 - [3. How to use react-router-dom?](#3-how-to-use-react-router-dom)
   - [3.1 How to create router with `BrowserRouter`?](#31-how-to-create-router-with-browserrouter)
   - [3.2 How to create router in new way with `RouterProvider`?](#32-how-to-create-router-in-new-way-with-routerprovider)
+    - [3.2.1 Create RootLayout](#321-create-rootlayout)
+    - [3.2.2 Create routes](#322-create-routes)
+    - [3.2.3 Create nested routes](#323-create-nested-routes)
 
 # 1. Overview
 
@@ -64,6 +67,36 @@ export default App
 
 ## 3.2 How to create router in new way with `RouterProvider`?
 
+### 3.2.1 Create RootLayout
+
+- Use `<Outlet />` to render the child route's element
+
+```js
+// src/components/templates/root-layout/RootLayout.tsx
+
+export const RootLayout: FC<RootLayoutProps> = ({ className, ...props }) => {
+  return (
+    <div className={clsx('root-layout', className)} {...props}>
+      <header>
+        <nav>
+          <h1>Router</h1>
+          {/* <Link to="/">Home</Link> */}
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <NavLink to="/help">Help</NavLink>
+        </nav>
+      </header>
+
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+```
+
+### 3.2.2 Create routes
+
 ```js
 // src/App.tsx
 
@@ -73,6 +106,30 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route index element={<Home />} />
         <Route path="/about" element={<About />} />
+      </Route>,
+    ),
+  )
+  return <RouterProvider router={router} />
+}
+```
+
+### 3.2.3 Create nested routes
+
+- For nested routes, DO NOT need slash `/` before path
+
+```js
+// src/App.tsx
+
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="help" element={<HelpLayout />}>
+          <Route path="contact" element={<Contact />} />
+          <Route path="faq" element={<Faq />} />
+        </Route>
       </Route>,
     ),
   )
