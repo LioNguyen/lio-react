@@ -2,6 +2,7 @@ import './CareerDetails.styles.scss'
 
 import { FC, HTMLAttributes } from 'react'
 import { useLoaderData } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 
 interface CareerDetailsProps extends HTMLAttributes<HTMLDivElement> {}
 

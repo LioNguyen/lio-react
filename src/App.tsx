@@ -17,6 +17,7 @@ import { HelpLayout } from '@/components/templates/help-layout'
 import { RootLayout } from '@/components/templates/root-layout'
 import { CareersApi } from '@/services/careersApi'
 import { CareersError } from '@/components/pages/careers-error'
+import { contactAction } from './components/pages/contact/Contact'
 
 function App() {
   const careersApi = new CareersApi()
@@ -25,12 +26,15 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
         <Route index element={<Home />} />
+
+        {/* Nested Route */}
         <Route path="about" element={<About />} />
         <Route path="help" element={<HelpLayout />}>
-          <Route path="contact" element={<Contact />} />
+          <Route path="contact" element={<Contact />} action={contactAction} />
           <Route path="faq" element={<Faq />} />
         </Route>
 
+        {/* Nested Route + data loading + handle error */}
         <Route
           path="/careers"
           element={<CareersLayout />}
@@ -44,6 +48,7 @@ function App() {
           />
         </Route>
 
+        {/* Handle not found page */}
         <Route path="*" element={<NotFound />} />
       </Route>,
     ),

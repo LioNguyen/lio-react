@@ -12,11 +12,13 @@
     - [3.3.1 Create RootLayout](#331-create-rootlayout)
     - [3.3.2 Create routes](#332-create-routes)
     - [3.3.3 Create nested routes](#333-create-nested-routes)
-    - [3.3.4 How to load data from API before navigating to specific path?](#334-how-to-load-data-from-api-before-navigating-to-specific-path)
-    - [3.3.5 How to get route parameters?](#335-how-to-get-route-parameters)
-      - [3.3.5.1 Get params in component via `useParams hook`](#3351-get-params-in-component-via-useparams-hook)
-      - [3.3.5.2 Get params in function via `function arguments`](#3352-get-params-in-function-via-function-arguments)
-    - [3.3.6 How to handle error when loading element?](#336-how-to-handle-error-when-loading-element)
+  - [3.4 How to load data from API before navigating to specific path?](#34-how-to-load-data-from-api-before-navigating-to-specific-path)
+  - [3.5 How to get route parameters?](#35-how-to-get-route-parameters)
+    - [3.5.1 Get params in component via `useParams` hook](#351-get-params-in-component-via-useparams-hook)
+    - [3.5.2 Get params in function via `function arguments`](#352-get-params-in-function-via-function-arguments)
+  - [3.6 How to get current URL info via `useLocation` hook?](#36-how-to-get-current-url-info-via-uselocation-hook)
+  - [3.7 How to handle error when loading element?](#37-how-to-handle-error-when-loading-element)
+  - [3.8 How to handle form data?](#38-how-to-handle-form-data)
 
 # 1. Overview
 
@@ -45,8 +47,9 @@ npm install react-router-dom
 - Create router (old way): `<BrowserRouter />, <Routes />, <Route />`
 - Create router (new way):
   - Component: `<RouterProvider />, <Route />, <Outlet />`
-  - Method: `createBrowserRouter(), createRoutesFromElements()`
-- Some hooks: `useLoaderData, useParams, useRouteError`
+  - Method: `createBrowserRouter(), createRoutesFromElements(), redirect()`
+- Hooks get data via Route prop: `useActionData, useLoaderData, useParams, useRouteError`
+- Hooks get data via url: `useLocation`
 
 ## 3.2 How to create router with `BrowserRouter`?
 
@@ -154,7 +157,7 @@ function App() {
 }
 ```
 
-### 3.3.4 How to load data from API before navigating to specific path?
+## 3.4 How to load data from API before navigating to specific path?
 
 - Use `loader` prop and pass a Promise to it
 
@@ -188,7 +191,7 @@ function App() {
 }
 ```
 
-### 3.3.5 How to get route parameters?
+## 3.5 How to get route parameters?
 
 - Use `:` in `path` prop to indicate params
 
@@ -215,7 +218,9 @@ function App() {
 }
 ```
 
-#### 3.3.5.1 Get params in component via `useParams hook`
+### 3.5.1 Get params in component via [`useParams`](https://reactrouter.com/en/6.22.3/hooks/use-params) hook
+
+- The `useParams` hook `returns` an `object of key/value pairs` of the dynamic params from the current URL that were `matched by the <Route path>`. Child routes inherit all params from their parent routes.
 
 ```js
 // src/components/pages/career-details/CareerDetails.tsx
@@ -236,7 +241,7 @@ export const CareerDetails: FC<CareerDetailsProps> = () => {
 }
 ```
 
-#### 3.3.5.2 Get params in function via `function arguments`
+### 3.5.2 Get params in function via `function arguments`
 
 ```js
 // src/types/career.ts
@@ -262,9 +267,40 @@ export class CareersApi {
 }
 ```
 
-### 3.3.6 How to handle error when loading element?
+## 3.6 How to get current URL info via [`useLocation`](https://reactrouter.com/en/6.22.3/hooks/use-location) hook?
 
-- Use `errorElement` prop
+- This hook `returns` the `current location object`. This can be useful if you'd like to perform some side effect whenever the current location changes.
+
+```js
+// src/components/molecules/breadcrumbs/Breadcrumbs.tsx
+
+export const Breadcrumbs: FC<BreadcrumbsProps> = () => {
+  const location = useLocation()
+
+  let currentLink = ''
+
+  // Create breadcrumbs from existing pathname
+  const crumbs = location.pathname
+    .split('/')
+    .filter((crumb) => crumb !== '')
+    .map((crumb) => {
+      currentLink += `/${crumb}`
+
+      return (
+        <div className="crumb" key={crumb}>
+          <Link to={currentLink}>{crumb}</Link>
+        </div>
+      )
+    })
+
+  return <div className="breadcrumbs">{crumbs}</div>
+}
+```
+
+## 3.7 How to handle error when loading element?
+
+- Use `useRouteError` hook to get error data from route
+- Use `errorElement` prop to handle error element
 
 ```js
 // src/components/pages/careers-error/CareersError.tsx
@@ -301,6 +337,73 @@ function App() {
             element={<CareerDetails />}
             loader={careersApi.getCareerDetails}
           />
+        </Route>
+      </Route>,
+    ),
+  )
+  return <RouterProvider router={router} />
+}
+```
+
+## 3.8 How to handle form data?
+
+- Use `useActionData` hook to get data from route
+- Use `action` prop to handle form action
+
+```js
+// src/components/pages/contact/Contact.tsx
+
+export const Contact: FC<ContactProps> = () => {
+  const data: any = useActionData()
+
+  return (
+    <div className="contact">
+      <h3>Contact Us</h3>
+      <Form method="POST" action="/help/contact">
+        // Your form code
+
+        {data && data?.error && <p>{data?.error}</p>}
+
+        <button>Submit</button>
+      </Form>
+    </div>
+  )
+}
+
+export async function contactAction(args: any) {
+  const data = await args.request.formData()
+
+  const submission = {
+    email: data.get('email'),
+    message: data.get('message'),
+  }
+
+  // send your post request
+
+  if (submission.message.length < 10) {
+    return { error: 'Message must be over 10 chars long.' }
+  }
+
+  return redirect('/')
+}
+```
+
+```js
+// src/App.tsx
+
+function App() {
+  const careersApi = new CareersApi()
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout />}>
+        <Route index element={<Home />} />
+
+        {/* Nested Route */}
+        <Route path="about" element={<About />} />
+        <Route path="help" element={<HelpLayout />}>
+          <Route path="contact" element={<Contact />} action={contactAction} />
+          <Route path="faq" element={<Faq />} />
         </Route>
       </Route>,
     ),

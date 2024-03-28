@@ -4,6 +4,8 @@ import clsx from 'clsx'
 import { FC, HTMLAttributes } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 
+import { Breadcrumbs } from '@/components/molecules/breadcrumbs'
+
 interface RootLayoutProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const RootLayout: FC<RootLayoutProps> = ({ className, ...props }) => {
@@ -18,6 +20,8 @@ export const RootLayout: FC<RootLayoutProps> = ({ className, ...props }) => {
           <NavLink to="/help">Help</NavLink>
           <NavLink to="careers">Careers</NavLink>
         </nav>
+
+        <Breadcrumbs />
       </header>
 
       <main>
