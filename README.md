@@ -19,6 +19,11 @@
   - [3.6 How to get current URL info via `useLocation` hook?](#36-how-to-get-current-url-info-via-uselocation-hook)
   - [3.7 How to handle error when loading element?](#37-how-to-handle-error-when-loading-element)
   - [3.8 How to handle form data?](#38-how-to-handle-form-data)
+    - [3.8.1 Component and action](#381-component-and-action)
+    - [3.8.2 Handle at router](#382-handle-at-router)
+  - [3.9 How to navigate or redirect?](#39-how-to-navigate-or-redirect)
+    - [3.9.1 `<Navigate />` component](#391-navigate--component)
+    - [3.9.2 `redirect` method](#392-redirect-method)
 
 # 1. Overview
 
@@ -350,6 +355,8 @@ function App() {
 - Use `useActionData` hook to get data from route
 - Use `action` prop to handle form action
 
+### 3.8.1 Component and action
+
 ```js
 // src/components/pages/contact/Contact.tsx
 
@@ -388,6 +395,8 @@ export async function contactAction(args: any) {
 }
 ```
 
+### 3.8.2 Handle at router
+
 ```js
 // src/App.tsx
 
@@ -409,5 +418,50 @@ function App() {
     ),
   )
   return <RouterProvider router={router} />
+}
+```
+
+## 3.9 How to navigate or redirect?
+
+### 3.9.1 `<Navigate />` component
+
+```js
+// src/components/pages/about/About.tsx
+
+export const About: FC<AboutProps> = ({ className, ...props }) => {
+  const [user, setUser] = useState('Lio')
+
+  if (!user) {
+    return <Navigate to={'/'} replace={true} />
+  }
+  return (
+    <div className={clsx('about', className)} {...props}>
+      // Your code
+    </div>
+  )
+}
+```
+
+### 3.9.2 `redirect` method
+
+```js
+// src/components/pages/contact/Contact.tsx
+
+
+export async function contactAction(args: any) {
+  const data = await args.request.formData()
+
+  const submission = {
+    email: data.get('email'),
+    message: data.get('message'),
+  }
+
+  // send your post request
+
+  if (submission.message.length < 10) {
+    return { error: 'Message must be over 10 chars long.' }
+  }
+
+  return redirect('/')
 }
 ```
