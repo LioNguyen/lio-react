@@ -1,9 +1,13 @@
-function App() {
+import 'reactflow/dist/style.css'
+
+import { Lesson_1 } from '@/components/organisms/lesson-1-basic'
+// import { ReactFlowTemplate } from './components/organisms/reactflow-template'
+
+export default function App() {
   return (
     <>
-      <h1>Vite + React</h1>
+      {/* <ReactFlowTemplate /> */}
+      <Lesson_1 />
     </>
   )
 }
-
-export default App

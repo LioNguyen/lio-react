@@ -2,9 +2,9 @@ name: CI | Vite Boilerplate
 
 on:
   push:
-    branches: ['boilerplate-vite']
+    branches: ['npm-react-flow']
   pull_request:
-    branches: ['boilerplate-vite']
+    branches: ['npm-react-flow']
 
 jobs:
   build:
