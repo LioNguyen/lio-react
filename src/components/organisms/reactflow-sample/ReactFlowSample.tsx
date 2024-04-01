@@ -1,4 +1,4 @@
-import './ReactflowTemplate.styles.scss'
+import './ReactFlowSample.styles.scss'
 
 import { FC, useCallback } from 'react'
 import ReactFlow, {
@@ -14,9 +14,9 @@ import ReactFlow, {
 import { initialEdges, edgeTypes } from './edges'
 import { initialNodes, nodeTypes } from './nodes'
 
-interface ReactFlowTemplateProps {}
+interface ReactFlowSampleProps {}
 
-export const ReactFlowTemplate: FC<ReactFlowTemplateProps> = () => {
+export const ReactFlowSample: FC<ReactFlowSampleProps> = () => {
   const [nodes, , onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
   const onConnect: OnConnect = useCallback(

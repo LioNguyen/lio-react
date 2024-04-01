@@ -2,9 +2,12 @@
 
 - [1. Overview](#1-overview)
   - [1.1 Resources](#11-resources)
-  - [1.2 What does this boilerplate have?](#12-what-does-this-boilerplate-have)
-- [2. How to init Vite?](#2-how-to-init-vite)
+  - [1.2 What can you learn?](#12-what-can-you-learn)
+- [2. How to init Reactflow?](#2-how-to-init-reactflow)
   - [2.1 Install library](#21-install-library)
+  - [2.2 Config \& Setup](#22-config--setup)
+    - [2.2.1 src/App.tsx](#221-srcapptsx)
+    - [2.2.2 src/index.css](#222-srcindexcss)
 - [3. How to use `reactflow`?](#3-how-to-use-reactflow)
   - [3.1 Overview](#31-overview)
     - [3.1.1 Important](#311-important)
@@ -17,12 +20,13 @@
 ## 1.1 Resources
 
 - [React Flow | Official Document](https://reactflow.dev/learn/getting-started/installation-and-requirements)
+- [Default Node Type | Official Document](https://reactflow.dev/api-reference/types/node#default-node-types)
 
-## 1.2 What does this boilerplate have?
+## 1.2 What can you learn?
 
 - reactflow tutorial
 
-# 2. How to init Vite?
+# 2. How to init Reactflow?
 
 ## 2.1 Install library
 
@@ -31,6 +35,28 @@ npm install reactflow
 
 # or run this to get full template
 npx degit xyflow/vite-react-flow-template your-app-name
+```
+
+## 2.2 Config & Setup
+
+### 2.2.1 src/App.tsx
+
+```js
+import 'reactflow/dist/style.css'
+```
+
+### 2.2.2 src/index.css
+
+```css
+body {
+  margin: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
 ```
 
 # 3. How to use `reactflow`?
@@ -47,12 +73,16 @@ There are 3 important things:
 
 ### 3.1.2 Frequently use
 
-- Components: `<ReactFlow />, <Background />, <Controls />`
+- Components: `<ReactFlow />, <Background />, <Controls />, <Panel />`
 - Methods: `addEdge(), applyEdgeChanges(), applyNodeChanges()`
 - Props:
   - `fitView` prop: make sure that the initial node is centered in the view
 
 ## 3.2 How to draw a basic chart?
+
+- Create `<ReactFlow />` component to wrap all components
+- Use `<Background />, <Controls />` inside
+- Use `<Panel />` to render title
 
 ```js
 // src/components/organisms/lesson-1-basic/Lesson_1.tsx
@@ -80,6 +110,7 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
       <ReactFlow nodes={nodes} edges={edges}>
         <Background />
         <Controls />
+        <Panel position="top-left">React Flow Title</Panel>
       </ReactFlow>
     </div>
   )

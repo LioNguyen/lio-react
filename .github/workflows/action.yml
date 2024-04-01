@@ -1,4 +1,4 @@
-name: CI | Vite Boilerplate
+name: CI | ReactFlow
 
 on:
   push:
