@@ -9,11 +9,27 @@ import {
   Heading,
   Spacer,
   Text,
+  useToast,
 } from '@chakra-ui/react'
+import { UnlockIcon } from '@chakra-ui/icons'
 
 interface NavbarProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Navbar: FC<NavbarProps> = () => {
+  const toast = useToast()
+
+  const showToast = () => {
+    toast({
+      status: 'success',
+      title: 'Logged out',
+      description: 'Successfully logged out',
+      duration: 5000,
+      isClosable: true,
+      position: 'bottom-right',
+      icon: <UnlockIcon />,
+    })
+  }
+
   return (
     <>
       {/* <Lesson_2 /> */}
@@ -26,7 +42,9 @@ export const Navbar: FC<NavbarProps> = () => {
             M
           </Box>
           <Text>lio.dev@gmail.com</Text>
-          <Button colorScheme="purple">Logout</Button>
+          <Button colorScheme="purple" onClick={showToast}>
+            Logout
+          </Button>
         </HStack>
       </Flex>
     </>

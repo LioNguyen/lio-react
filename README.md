@@ -22,6 +22,9 @@
     - [3.4.3 List](#343-list)
     - [3.4.4 Tabs](#344-tabs)
     - [3.4.5 Form](#345-form)
+  - [3.5 Toast](#35-toast)
+    - [3.5.1 Use toast in function component](#351-use-toast-in-function-component)
+    - [3.5.2 Use toast outside component](#352-use-toast-outside-component)
 
 # 1. Overview
 
@@ -29,6 +32,7 @@
 
 - [Chakra UI | Official Document](https://chakra-ui.com/getting-started)
 - [Chakra Icons | Official Document](https://chakra-ui.com/docs/components/icon/usage#all-icons)
+- [Chakra Toast | Official Document](https://chakra-ui.com/docs/components/toast/usage#standalone-toasts)
 - [Chakra UI Tutorial | Youtube](https://www.youtube.com/watch?v=iXsM6NkEmFc&list=PL4cUxeGkcC9hcnIeryurNMMcGBHp7AYlP&ab_channel=NetNinja)
 
 ## 1.2 What can you learn?
@@ -133,6 +137,9 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
 ```
 
 ### 3.2.2 Flex
+
+- Use `<Flex />, <HStack />, <VStack />` for flex layout
+- Can use `<Spacer />` instead of `gap prop`
 
 ```js
 // src/components/organisms/lesson-2-flex-layouts/Lesson_2.tsx
@@ -364,4 +371,71 @@ import { Heading, Text } from '@chakra-ui/react'
 
   <Button type="submit">Submit</Button>
 </Form>
+```
+
+## 3.5 Toast
+
+### 3.5.1 Use toast in function component
+
+- Use `useToast()` hook
+
+```js
+// src/components/organisms/navbar/Navbar.tsx
+
+export const Navbar: FC<NavbarProps> = () => {
+  const toast = useToast()
+
+  const showToast = () => {
+    toast({
+      status: 'success',
+      title: 'Logged out',
+      description: 'Successfully logged out',
+      duration: 5000,
+      isClosable: true,
+      position: 'bottom-right',
+      icon: <UnlockIcon />,
+    })
+  }
+
+  return (
+    <>
+      <Flex p="10px" alignItems="center">
+          // Your code
+
+          <Button colorScheme="purple" onClick={showToast}>
+            Logout
+          </Button>
+        </HStack>
+      </Flex>
+    </>
+  )
+}
+```
+
+### 3.5.2 Use toast outside component
+
+- [1.1 Resources](#11-resources)
+
+```js
+import * as ReactDOM from 'react-dom/client'
+import { createStandaloneToast } from '@chakra-ui/react'
+
+const { ToastContainer, toast } = createStandaloneToast()
+
+// render the ToastContainer in your React root
+const rootElement = document.getElementById('root')
+ReactDOM.createRoot(yourRootElement).render(
+  <>
+    <App />
+    <ToastContainer />
+  </>,
+)
+
+toast({
+  title: 'An error occurred.',
+  description: 'Unable to create user account.',
+  status: 'error',
+  duration: 9000,
+  isClosable: true,
+})
 ```
