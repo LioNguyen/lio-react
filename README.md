@@ -1,4 +1,4 @@
-**Table of Contents | Vite Boilerplate**
+**Table of Contents | React Form Control with Zod**
 
 - [1. Overview](#1-overview)
   - [1.1 Resources](#11-resources)

@@ -1,4 +1,4 @@
-import './Lesson_2.styles.scss'
+import './Lesson_3.styles.scss'
 
 import {
   Box,
@@ -14,17 +14,42 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { UserFormFields } from '@/types'
 
-interface Lesson_2Props extends FormHTMLAttributes<HTMLFormElement> {}
+interface Lesson_3Props extends FormHTMLAttributes<HTMLFormElement> {}
 
-export const Lesson_2: FC<Lesson_2Props> = ({ className, ...props }) => {
+/**
+ * Advance form state: formState: { isSubmitting },
+ * Advance method: setError
+ */
+export const Lesson_3: FC<Lesson_3Props> = ({ className, ...props }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<UserFormFields>()
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<UserFormFields>({
+    defaultValues: {
+      email: 'test@co.co',
+      password: '55555555',
+    },
+  })
 
-  const onSubmit: SubmitHandler<UserFormFields> = (data) => {
-    console.log({ data })
+  const onSubmit: SubmitHandler<UserFormFields> = async (data) => {
+    try {
+      const res = await new Promise((resolve) =>
+        setTimeout(() => resolve(data), 2000),
+      )
+
+      console.log({ res })
+
+      throw new Error()
+    } catch (error) {
+      setError('email', {
+        message: 'Email already exists',
+      })
+      setError('root', {
+        message: 'Something went wrong',
+      })
+    }
   }
 
   return (
@@ -75,7 +100,13 @@ export const Lesson_2: FC<Lesson_2Props> = ({ className, ...props }) => {
         />
         <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
       </FormControl>
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Loading...' : 'Submit'}
+      </Button>
+
+      <FormControl isInvalid={!!errors?.root}>
+        <FormErrorMessage>{errors?.root?.message}</FormErrorMessage>
+      </FormControl>
     </Box>
   )
 }

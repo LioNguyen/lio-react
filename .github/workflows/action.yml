@@ -1,10 +1,10 @@
-name: CI | React Form Control
+name: CI | React Form Control with Zod
 
 on:
   push:
-    branches: ['react-form-control']
+    branches: ['react-form-control-with-zod']
   pull_request:
-    branches: ['react-form-control']
+    branches: ['react-form-control-with-zod']
 
 jobs:
   build:
