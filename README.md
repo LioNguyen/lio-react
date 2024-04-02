@@ -13,7 +13,12 @@
     - [3.1.1 Important](#311-important)
     - [3.1.2 Frequently use](#312-frequently-use)
   - [3.2 How to draw a basic chart?](#32-how-to-draw-a-basic-chart)
+    - [3.2.1 Create nodes and edges](#321-create-nodes-and-edges)
+    - [3.2.2 Create component](#322-create-component)
+    - [3.2.3 Add style with height and width](#323-add-style-with-height-and-width)
   - [3.3 How to create interactivity in chart?](#33-how-to-create-interactivity-in-chart)
+    - [3.3.1 Create function to handle when node, edge or connection changes](#331-create-function-to-handle-when-node-edge-or-connection-changes)
+    - [3.3.2 Create component](#332-create-component)
 
 # 1. Overview
 
@@ -21,6 +26,7 @@
 
 - [React Flow | Official Document](https://reactflow.dev/learn/getting-started/installation-and-requirements)
 - [Default Node Type | Official Document](https://reactflow.dev/api-reference/types/node#default-node-types)
+- [Build a Mind Map App with React Flow](https://reactflow.dev/learn/tutorials/mind-map-app-with-react-flow)
 
 ## 1.2 What can you learn?
 
@@ -82,12 +88,13 @@ There are 3 important things:
 
 - Create `<ReactFlow />` component to wrap all components
 - Use `<Background />, <Controls />` inside
-- Use `<Panel />` to render title
+- Use `<Panel />` to render Flow title
+
+### 3.2.1 Create nodes and edges
 
 ```js
 // src/components/organisms/lesson-1-basic/Lesson_1.tsx
 
-export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
   const edges: Edge[] = [
     { id: '1', source: '1', target: '2', label: 'to the', type: 'step' },
   ]
@@ -105,6 +112,14 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
       data: { label: 'World' },
     },
   ]
+```
+
+### 3.2.2 Create component
+
+```js
+// src/components/organisms/lesson-1-basic/Lesson_1.tsx
+
+export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
   return (
     <div className={clsx('lesson-1', className)} {...props}>
       <ReactFlow nodes={nodes} edges={edges}>
@@ -117,6 +132,8 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
 }
 ```
 
+### 3.2.3 Add style with height and width
+
 ```css
 /* src/components/organisms/lesson-1-basic/Lesson_1.styles.scss */
 
@@ -127,6 +144,28 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
 ```
 
 ## 3.3 How to create interactivity in chart?
+
+- Use `addEdge, applyEdgeChanges, applyNodeChanges` method
+
+### 3.3.1 Create function to handle when node, edge or connection changes
+
+```js
+// src/components/organisms/lesson-2-interactivity/Lesson_2.tsx
+
+  const onConnect = (params: Edge | Connection) => {
+    setEdges((eds) => addEdge(params, eds))
+  }
+
+  const onEdgeChange = (changes: EdgeChange[]) => {
+    setEdges((eds) => applyEdgeChanges(changes, eds))
+  }
+
+  const onNodesChange = (changes: NodeChange[]) => {
+    setNodes((nds) => applyNodeChanges(changes, nds))
+  }
+```
+
+### 3.3.2 Create component
 
 ```js
 // src/components/organisms/lesson-2-interactivity/Lesson_2.tsx
@@ -157,17 +196,7 @@ export const Lesson_2: FC<Lesson_2Props> = ({ className, ...props }) => {
   const [edges, setEdges] = useState(initialEdges)
   const [nodes, setNodes] = useState(initialNodes)
 
-  const onConnect = (params: Edge | Connection) => {
-    setEdges((eds) => addEdge(params, eds))
-  }
-
-  const onEdgeChange = (changes: EdgeChange[]) => {
-    setEdges((eds) => applyEdgeChanges(changes, eds))
-  }
-
-  const onNodesChange = (changes: NodeChange[]) => {
-    setNodes((nds) => applyNodeChanges(changes, nds))
-  }
+  //  Add function to handle
 
   return (
     <div className={clsx('lesson-2', className)} {...props}>

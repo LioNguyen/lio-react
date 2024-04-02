@@ -1,1 +1,54 @@
-.mind-map-node {}
+.mind-map-node {
+  background: #f6ad55;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  padding: 10px 15px;
+  font-weight: 700;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    input {
+      flex: 1;
+    }
+  }
+
+  .note {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .dragHandle {
+    background: transparent;
+    width: 14px;
+    height: 100%;
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+  }
+
+  .react-flow__handle {
+    &.target {
+      top: 50%;
+      pointer-events: none;
+      opacity: 0;
+    }
+    &.source {
+      top: 0;
+      left: 0;
+      transform: none;
+      background: #f6ad55;
+      height: 100%;
+      width: 100%;
+      border-radius: 2px;
+      border: none;
+    }
+  }
+}
