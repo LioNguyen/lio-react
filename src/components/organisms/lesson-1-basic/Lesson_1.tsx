@@ -25,13 +25,20 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
       onSubmit={handleSubmit(onSubmit)}
       {...props}
     >
+      {/* Email input */}
       <FormControl mb="15px">
         <FormLabel>Email</FormLabel>
-        <Input type="text" {...register('email')} />
+        <Input type="text" placeholder="Email" {...register('email')} />
       </FormControl>
+
+      {/* Password input */}
       <FormControl mb="15px">
         <FormLabel>Password</FormLabel>
-        <Input type="password" {...register('password')} />
+        <Input
+          type="password"
+          placeholder="Password"
+          {...register('password')}
+        />
       </FormControl>
       <Button type="submit">Submit</Button>
     </Box>

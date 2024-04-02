@@ -3,10 +3,8 @@
 - [1. Overview](#1-overview)
   - [1.1 Resources](#11-resources)
   - [1.2 What can you learn?](#12-what-can-you-learn)
-- [2. How to init Vite?](#2-how-to-init-vite)
-  - [2.1 Install library](#21-install-library)
-  - [2.2 Config \& Setup](#22-config--setup)
-    - [2.2.1 tsconfig.json](#221-tsconfigjson)
+- [2. How to init?](#2-how-to-init)
+- [3. How to use react-hook-form?](#3-how-to-use-react-hook-form)
 
 # 1. Overview
 
@@ -20,28 +18,11 @@
 - React-hook-form
 - Zod
 
-# 2. How to init Vite?
-
-## 2.1 Install library
+# 2. How to init?
 
 ```bash
 npm i react-hook-form
 npm i zod @hookform/resolvers
 ```
 
-## 2.2 Config & Setup
-
-### 2.2.1 tsconfig.json
-
-- Setup path aliases
-
-```json
-{
-  "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
-}
-```
+# 3. How to use react-hook-form?
