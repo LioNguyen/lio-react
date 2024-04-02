@@ -1,7 +1,12 @@
 import './Contact.styles.scss'
 
 import { FC, HTMLAttributes } from 'react'
-import { Form, redirect, useActionData } from 'react-router-dom'
+import {
+  ActionFunctionArgs,
+  Form,
+  redirect,
+  useActionData,
+} from 'react-router-dom'
 
 interface ContactProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -28,12 +33,12 @@ export const Contact: FC<ContactProps> = () => {
   )
 }
 
-export async function contactAction(args: any) {
+export async function contactAction(args: ActionFunctionArgs) {
   const data = await args.request.formData()
 
   const submission = {
-    email: data.get('email'),
-    message: data.get('message'),
+    email: data.get('email') || '',
+    message: (data.get('message') || '') as string,
   }
 
   // send your post request

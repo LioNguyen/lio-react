@@ -13,14 +13,18 @@
     - [3.3.2 Create routes](#332-create-routes)
     - [3.3.3 Create nested routes](#333-create-nested-routes)
   - [3.4 How to load data from API before navigating to specific path?](#34-how-to-load-data-from-api-before-navigating-to-specific-path)
+    - [3.4.1 Create function to get API](#341-create-function-to-get-api)
+    - [3.4.2 Use `loader` prop to execute function](#342-use-loader-prop-to-execute-function)
+    - [3.4.3 Use `useLoaderData()` hook to get data passed from `<Route />`](#343-use-useloaderdata-hook-to-get-data-passed-from-route-)
   - [3.5 How to get route parameters?](#35-how-to-get-route-parameters)
     - [3.5.1 Get params in component via `useParams` hook](#351-get-params-in-component-via-useparams-hook)
-    - [3.5.2 Get params in function via `function arguments`](#352-get-params-in-function-via-function-arguments)
+    - [3.5.2 Get params in function via `arguments`](#352-get-params-in-function-via-arguments)
   - [3.6 How to get current URL info via `useLocation` hook?](#36-how-to-get-current-url-info-via-uselocation-hook)
   - [3.7 How to handle error when loading element?](#37-how-to-handle-error-when-loading-element)
   - [3.8 How to handle form data?](#38-how-to-handle-form-data)
-    - [3.8.1 Component and action](#381-component-and-action)
-    - [3.8.2 Handle at router](#382-handle-at-router)
+    - [3.8.1 Create function to post API](#381-create-function-to-post-api)
+    - [3.8.2 Use `action` prop to execute function at router](#382-use-action-prop-to-execute-function-at-router)
+    - [3.8.3 Use `useActionData()` hook to get data passed from `<Route />`](#383-use-useactiondata-hook-to-get-data-passed-from-route-)
   - [3.9 How to navigate or redirect?](#39-how-to-navigate-or-redirect)
     - [3.9.1 `<Navigate />` component](#391-navigate--component)
     - [3.9.2 `redirect` method](#392-redirect-method)
@@ -110,6 +114,7 @@ export const RootLayout: FC<RootLayoutProps> = ({ className, ...props }) => {
       </header>
 
       <main>
+        // render the child route's element
         <Outlet />
       </main>
     </div>
@@ -164,6 +169,8 @@ function App() {
 
 ## 3.4 How to load data from API before navigating to specific path?
 
+### 3.4.1 Create function to get API
+
 - Use `loader` prop and pass a Promise to it
 
 ```js
@@ -177,6 +184,8 @@ export class CareersApi {
   }
 }
 ```
+
+### 3.4.2 Use `loader` prop to execute function
 
 ```js
 // src/App.tsx
@@ -193,6 +202,27 @@ function App() {
     ),
   )
   return <RouterProvider router={router} />
+}
+```
+
+### 3.4.3 Use `useLoaderData()` hook to get data passed from `<Route />`
+
+```js
+// src/components/pages/careers/Careers.tsx
+
+export const Careers: FC<CareersProps> = () => {
+  const careers: any = useLoaderData()
+
+  return (
+    <div className="careers">
+      {(careers ?? []).map((career: any) => (
+        <Link to={career.id.toString()} key={career.id}>
+          <p>{career.title}</p>
+          <p>Based in {career.location}</p>
+        </Link>
+      ))}
+    </div>
+  )
 }
 ```
 
@@ -246,7 +276,7 @@ export const CareerDetails: FC<CareerDetailsProps> = () => {
 }
 ```
 
-### 3.5.2 Get params in function via `function arguments`
+### 3.5.2 Get params in function via `arguments`
 
 ```js
 // src/types/career.ts
@@ -353,31 +383,18 @@ function App() {
 ## 3.8 How to handle form data?
 
 - Use `useActionData` hook to get data from route
-- Use `action` prop to handle form action
 
-### 3.8.1 Component and action
+### 3.8.1 Create function to post API
+
+- Use `ActionFunctionArgs` type for function arguments
+- Use `redirect()` method after action done
 
 ```js
 // src/components/pages/contact/Contact.tsx
 
-export const Contact: FC<ContactProps> = () => {
-  const data: any = useActionData()
+import { ActionFunctionArgs, redirect } from 'react-router-dom'
 
-  return (
-    <div className="contact">
-      <h3>Contact Us</h3>
-      <Form method="POST" action="/help/contact">
-        // Your form code
-
-        {data && data?.error && <p>{data?.error}</p>}
-
-        <button>Submit</button>
-      </Form>
-    </div>
-  )
-}
-
-export async function contactAction(args: any) {
+export async function contactAction(args: ActionFunctionArgs<any>) {
   const data = await args.request.formData()
 
   const submission = {
@@ -395,7 +412,9 @@ export async function contactAction(args: any) {
 }
 ```
 
-### 3.8.2 Handle at router
+### 3.8.2 Use `action` prop to execute function at router
+
+- Add function into `action` prop to handle form action
 
 ```js
 // src/App.tsx
@@ -419,6 +438,32 @@ function App() {
   )
   return <RouterProvider router={router} />
 }
+```
+
+### 3.8.3 Use `useActionData()` hook to get data passed from `<Route />`
+
+```js
+// src/components/pages/contact/Contact.tsx
+
+import { useActionData } from 'react-router-dom'
+
+export const Contact: FC<ContactProps> = () => {
+  const data: any = useActionData()
+
+  return (
+    <div className="contact">
+      <h3>Contact Us</h3>
+      <Form method="POST" action="/help/contact">
+        // Your form code
+
+        {data && data?.error && <p>{data?.error}</p>}
+
+        <button>Submit</button>
+      </Form>
+    </div>
+  )
+}
+
 ```
 
 ## 3.9 How to navigate or redirect?
