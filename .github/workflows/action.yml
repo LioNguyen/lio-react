@@ -1,10 +1,10 @@
-name: CI | React Form
+name: CI | React Form Control
 
 on:
   push:
-    branches: ['react-form']
+    branches: ['react-form-control']
   pull_request:
-    branches: ['react-form']
+    branches: ['react-form-control']
 
 jobs:
   build:
