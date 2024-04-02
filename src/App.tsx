@@ -23,7 +23,7 @@ const router = createBrowserRouter(
         loader={taskApi.getTask}
         errorElement={<Error />}
       />
-      <Route path="create" element={<Create />} />
+      <Route path="create" element={<Create />} action={taskApi.createTask} />
       <Route path="profile" element={<Profile />} />
     </Route>,
   ),
