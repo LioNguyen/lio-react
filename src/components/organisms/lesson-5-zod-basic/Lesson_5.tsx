@@ -10,6 +10,7 @@ interface Lesson_5Props extends HTMLAttributes<HTMLDivElement> {}
 
 export const Lesson_5: FC<Lesson_5Props> = ({ className, ...props }) => {
   const user: User = {
+    id: '1',
     username: 'John Doe',
     age: 20,
     birthday: new Date(),

@@ -13,6 +13,7 @@ interface Lesson_6Props extends HTMLAttributes<HTMLDivElement> {}
  */
 export const Lesson_6: FC<Lesson_6Props> = ({ className, ...props }) => {
   const user: User = {
+    id: '1',
     username: 'John Doe',
     age: 20,
     birthday: new Date(),

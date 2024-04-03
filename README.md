@@ -324,17 +324,21 @@ export const Lesson_2: FC<Lesson_2Props> = ({ className, ...props }) => {
 
 - Type of zod: `number(), string(), boolean(), date(), object(), nullish(), nullable()`
 - Array type of zod: `array(), tuple()`
-- Some common methods: `optional(), default(), min(), max(), length(), nonempty()`
+- Special type of zod: `literal(), union(), discriminatedUnion()`
+- Some common methods: `optional(), default(), min(), max(), length(), nonempty(), or()`
 
 ## 4.1 How to create basic schema?
 
 - By default, all fields are required
 - Use as const to make it readonly
+- nullable() means null
+- nullish() means null or undefined
 - array() is used to define an array
 - tuple() is used to define an array with a fixed number of elements
 - rest() is used to define the rest of the elements in a tuple
-- nullable() means null
-- nullish() means null or undefined
+- literal() is used to define a specific value
+- union() is used to define multiple types, the same as or()
+- discriminatedUnion() is used to define a union with a common property
 
 ```js
 // src/types/user.ts
@@ -350,11 +354,31 @@ export const UserSchema = z.object({
 })
 export type User = z.infer<typeof UserSchema>
 
+// array() is used to define an array
+// tuple() is used to define an array with a fixed number of elements
+// rest() is used to define the rest of the elements in a tuple
 export const UserListSchema = z.array(UserSchema).nonempty()
 export const ListSchema = z.array(z.number()).nonempty()
 export const ListSchemaAdvanced = z
   .tuple([z.number(), z.string()])
   .rest(z.number())
+
+// union() is used to define multiple types, the same as or()
+// discriminatedUnion() is used to define a union with a common property
+export const StatusSchema = z.union([
+  z.literal('active'),
+  z.literal('inactive'),
+])
+export const StatusSchemaAdvanced = z.discriminatedUnion('status', [
+  z.object({
+    status: z.literal('active'),
+    description: z.string(),
+  }),
+  z.object({
+    status: z.literal('inactive'),
+    reason: z.string(),
+  }),
+])
 ```
 
 ## 4.2 How to validate based on schema?

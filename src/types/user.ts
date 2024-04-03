@@ -17,6 +17,11 @@ export type UserFormFields = z.infer<typeof userFormSchema>
  * nullish() means null or undefined
  * array() is used to define an array
  * tuple() is used to define an array with a fixed number of elements
+ * rest() is used to define the rest of the elements in a tuple
+ *
+ * literal() is used to define a specific value
+ * union() is used to define multiple types, the same as or()
+ * discriminatedUnion() is used to define a union with a common property
  *
  * parse() will return valid data or throw an error if the data is invalid
  * safeParse() will return an object with success (true/false) and data properties
@@ -38,6 +43,8 @@ export const UserSchemaInitial = z
   .strict()
 
 export const UserSchema = z.object({
+  // id: z.union([z.string(), z.number()]),
+  id: z.string().or(z.number()), // same as above
   username: z.string().min(3).max(20),
   age: z.number(),
   birthday: z.date().optional(),
@@ -63,9 +70,24 @@ export const ListSchemaAdvanced = z
   .tuple([z.number(), z.string()])
   .rest(z.number())
 
+export const StatusSchema = z.union([
+  z.literal('active'),
+  z.literal('inactive'),
+])
+export const StatusSchemaAdvanced = z.discriminatedUnion('status', [
+  z.object({
+    status: z.literal('active'),
+    description: z.string(),
+  }),
+  z.object({
+    status: z.literal('inactive'),
+    reason: z.string(),
+  }),
+])
+
 console.log(
   'ListSchema check',
-  ListSchemaAdvanced.safeParse([1, 'test', 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+  StatusSchema.safeParse({ status: 'inactive', reason: 'test' }),
 )
 console.log('-----------------')
 /* ----- END: User validation ----- */
