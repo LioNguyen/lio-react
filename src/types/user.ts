@@ -21,6 +21,7 @@ export type UserFormFields = z.infer<typeof userFormSchema>
  * pick() will return a new schema with only the specified fields
  * omit() will return a new schema without the specified fields
  * extend() will return a new schema with the specified fields added
+ * strict() will throw an error if there are extra fields
  *
  * shape is a property that contains all the properties of the schema
  */
