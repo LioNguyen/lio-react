@@ -2,6 +2,7 @@
 // import { Lesson_2 } from '@/components/organisms/lesson-2-form-validation'
 // import { Lesson_3 } from '@/components/organisms/lesson-3-advance'
 import { Lesson_4 } from '@/components/organisms/lesson-4-form-validation-zod'
+import { Lesson_5 } from '@/components/organisms/lesson-5-zod-basic'
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       {/* <Lesson_2 /> */}
       {/* <Lesson_3 /> */}
       <Lesson_4 />
+      <Lesson_5 />
     </>
   )
 }
