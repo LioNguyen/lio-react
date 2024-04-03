@@ -5,6 +5,7 @@
   - [1.2 What can you learn?](#12-what-can-you-learn)
 - [2. How to init?](#2-how-to-init)
 - [3. How to use react-hook-form?](#3-how-to-use-react-hook-form)
+- [4. How to use zod?](#4-how-to-use-zod)
 
 # 1. Overview
 
@@ -26,3 +27,5 @@ npm i zod @hookform/resolvers
 ```
 
 # 3. How to use react-hook-form?
+
+# 4. How to use zod?
