@@ -322,10 +322,17 @@ export const Lesson_2: FC<Lesson_2Props> = ({ className, ...props }) => {
 
 # 4. How to use zod?
 
+- Type of zod: `number(), string(), boolean(), date(), object(), nullish(), nullable()`
+- Array type of zod: `array(), tuple()`
+- Some common methods: `optional(), default(), min(), max(), length(), nonempty()`
+
 ## 4.1 How to create basic schema?
 
 - By default, all fields are required
 - Use as const to make it readonly
+- array() is used to define an array
+- tuple() is used to define an array with a fixed number of elements
+- rest() is used to define the rest of the elements in a tuple
 - nullable() means null
 - nullish() means null or undefined
 
@@ -342,6 +349,12 @@ export const UserSchema = z.object({
   hobbies: z.enum(hobbies).optional(),
 })
 export type User = z.infer<typeof UserSchema>
+
+export const UserListSchema = z.array(UserSchema).nonempty()
+export const ListSchema = z.array(z.number()).nonempty()
+export const ListSchemaAdvanced = z
+  .tuple([z.number(), z.string()])
+  .rest(z.number())
 ```
 
 ## 4.2 How to validate based on schema?
@@ -376,19 +389,26 @@ export type User = z.infer<typeof UserSchema>
 ```js
 // src/types/user.ts
 
+// strict() will throw an error if there are extra fields
 export const UserSchemaInitial = z
   .object({
     fullName: z.string().min(3).max(20),
   })
   .strict()
 
+// partial() is used to make all fields optional
 export const UserSchemaPartial = UserSchema.partial()
+
+// pick() will return a new schema with only the specified fields
 export const UserSchemaBasic = UserSchema.pick({
   username: true,
   age: true,
 })
+
+// omit() will return a new schema without the specified fields
 export const UserSchemaWithoutAge = UserSchema.omit({ age: true })
 
+// extend() will return a new schema with the specified fields added
 export const UserSchemaExtended = UserSchema.extend({
   gender: z.string().optional(),
 })

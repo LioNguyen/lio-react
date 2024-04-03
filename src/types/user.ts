@@ -15,6 +15,9 @@ export type UserFormFields = z.infer<typeof userFormSchema>
  * Use as const to make it readonly
  * nullable() means null
  * nullish() means null or undefined
+ * array() is used to define an array
+ * tuple() is used to define an array with a fixed number of elements
+ *
  * parse() will return valid data or throw an error if the data is invalid
  * safeParse() will return an object with success (true/false) and data properties
  * partial() is used to make all fields optional
@@ -53,4 +56,16 @@ export const UserSchemaWithoutAge = UserSchema.omit({ age: true })
 export const UserSchemaExtended = UserSchema.extend({
   gender: z.string().optional(),
 })
+
+export const UserListSchema = z.array(UserSchema).nonempty()
+export const ListSchema = z.array(z.number()).nonempty()
+export const ListSchemaAdvanced = z
+  .tuple([z.number(), z.string()])
+  .rest(z.number())
+
+console.log(
+  'ListSchema check',
+  ListSchemaAdvanced.safeParse([1, 'test', 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+)
+console.log('-----------------')
 /* ----- END: User validation ----- */
