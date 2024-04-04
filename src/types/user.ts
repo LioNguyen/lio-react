@@ -32,6 +32,10 @@ export type UserFormFields = z.infer<typeof userFormSchema>
  * strict() will throw an error if there are extra fields
  *
  * shape is a property that contains all the properties of the schema
+ *
+ * result.error can only be used when safeParse() returns false
+ * result.error.errors will return an array of errors
+ * result.error.flatten() will return a flattened array of errors, useful for displaying errors
  */
 // * `as const` in this case is important to make the array readonly
 const hobbies = ['reading', 'coding', 'gaming'] as const
@@ -85,9 +89,21 @@ export const StatusSchemaAdvanced = z.discriminatedUnion('status', [
   }),
 ])
 
-console.log(
-  'ListSchema check',
-  StatusSchema.safeParse({ status: 'inactive', reason: 'test' }),
-)
-console.log('-----------------')
+export const UserFormSchemaAdvanced = z.object({
+  email: z
+    .string()
+    .email()
+    .refine((value) => value.length > 5, {
+      message: 'Email must be longer than 5 characters',
+    }),
+  password: z.string().min(8),
+  // confirmPassword: z.string().min(8),
+})
+
+const result = UserFormSchemaAdvanced.safeParse({ email: '@' })
+
+if (!result.success) {
+  console.log('ListSchema check', result.error.errors)
+  console.log('ListSchema check', result.error.flatten())
+}
 /* ----- END: User validation ----- */

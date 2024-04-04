@@ -1,5 +1,7 @@
 **Table of Contents | React Form Control with Zod**
 
+> Status: ON GOING
+
 - [1. Overview](#1-overview)
   - [1.1 Resources](#11-resources)
   - [1.2 What can you learn?](#12-what-can-you-learn)
@@ -17,6 +19,7 @@
   - [4.1 How to create basic schema?](#41-how-to-create-basic-schema)
   - [4.2 How to validate based on schema?](#42-how-to-validate-based-on-schema)
   - [4.3 How to modify schema?](#43-how-to-modify-schema)
+  - [4.4 How to handle error from zod?](#44-how-to-handle-error-from-zod)
 
 # 1. Overview
 
@@ -322,7 +325,7 @@ export const Lesson_2: FC<Lesson_2Props> = ({ className, ...props }) => {
 
 # 4. How to use zod?
 
-- Type of zod: `number(), string(), boolean(), date(), object(), nullish(), nullable()`
+- Type of zod: `number(), string(), boolean(), date(), object(), nullish(), nullable(), email()`
 - Array type of zod: `array(), tuple()`
 - Special type of zod: `literal(), union(), discriminatedUnion()`
 - Some common methods: `optional(), default(), min(), max(), length(), nonempty(), or()`
@@ -436,4 +439,21 @@ export const UserSchemaWithoutAge = UserSchema.omit({ age: true })
 export const UserSchemaExtended = UserSchema.extend({
   gender: z.string().optional(),
 })
+```
+
+## 4.4 How to handle error from zod?
+
+- `result.error` can only be used when `safeParse()` returns false
+- `result.error.errors` will return an array of errors
+- `result.error.flatten()` will return a flattened array of errors, useful for displaying errors
+
+```js
+// src/types/user.ts
+
+const result = UserFormSchemaAdvanced.safeParse({ email: '@' })
+
+if (!result.success) {
+  console.log('ListSchema check', result.error.errors)
+  console.log('ListSchema check', result.error.flatten())
+}
 ```
