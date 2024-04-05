@@ -70,5 +70,57 @@
       "author": "Yoshi",
       "img": "/img/yoshi.png"
     }
+  ],
+  "tableData": [
+    {
+      "task": "Add a New Feature",
+      "status": { "id": 1, "name": "On Deck", "color": "blue.300" },
+      "due": "2023/10/15",
+      "notes": "This is a note"
+    },
+    {
+      "task": "Write Integration Tests",
+      "status": {
+        "id": 2,
+        "name": "In Progress",
+        "color": "yellow.400"
+      },
+      "due": null,
+      "notes": "Use Jest"
+    },
+    {
+      "task": "Add Instagram Integration",
+      "status": { "id": 4, "name": "Deployed", "color": "green.300" },
+      "due": null,
+      "notes": ""
+    },
+    {
+      "task": "Cleanup Database",
+      "status": null,
+      "due": "2023/02/15",
+      "notes": "Remove old data"
+    },
+    {
+      "task": "Refactor API Endpoints",
+      "status": { "id": 3, "name": "Testing", "color": "pink.300" },
+      "due": null,
+      "notes": ""
+    },
+    {
+      "task": "Add Documentation to API",
+      "status": null,
+      "due": "2023/09/12",
+      "notes": "Add JS Docs to all endpoints"
+    },
+    {
+      "task": "Update NPM Packages",
+      "status": {
+        "id": 2,
+        "name": "In Progress",
+        "color": "yellow.400"
+      },
+      "due": null,
+      "notes": "Upgrade React & Chakra UI"
+    }
   ]
 }

@@ -1,4 +1,4 @@
-import { AtSignIcon, CalendarIcon, EditIcon } from '@chakra-ui/icons'
+import { AtSignIcon, CalendarIcon, EditIcon, InfoIcon } from '@chakra-ui/icons'
 import './Lesson_4.styles.scss'
 
 import { List, ListIcon, ListItem } from '@chakra-ui/react'
@@ -26,6 +26,12 @@ export const Lesson_4: FC<Lesson_4Props> = () => {
         <NavLink to="/profile">
           <ListIcon as={AtSignIcon} color="white" />
           Profile
+        </NavLink>
+      </ListItem>
+      <ListItem>
+        <NavLink to="/table">
+          <ListIcon as={InfoIcon} color="white" />
+          Table
         </NavLink>
       </ListItem>
     </List>

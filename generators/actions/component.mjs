@@ -14,30 +14,28 @@ export const componentGenerator = {
       type: 'confirm',
       name: 'isTestIncluded',
       message: 'Include unit test?',
-      default: true,
+      default: false,
     },
   ],
   actions: function (data) {
     const { isTestIncluded } = data
 
     const defaultActionList = [
+      // Create component
       {
         type: 'add',
-        path: `${COMPONENT_PATH}/{{dashCase componentName}}/{{properCase componentName}}.tsx`,
+        path: `${COMPONENT_PATH}/{{dashCase componentName}}/index.tsx`,
         templateFile: `${TEMPLATE_PATH}/component.tsx.hbs`,
       },
+      // Create styles
       {
         type: 'add',
-        path: `${COMPONENT_PATH}/{{dashCase componentName}}/{{properCase componentName}}.styles.scss`,
-        templateFile: `${TEMPLATE_PATH}/component.styles.scss.hbs`,
-      },
-      {
-        type: 'add',
-        path: `${COMPONENT_PATH}/{{dashCase componentName}}/index.ts`,
-        templateFile: `${TEMPLATE_PATH}/component.index.ts.hbs`,
+        path: `${COMPONENT_PATH}/{{dashCase componentName}}/styles.ts`,
+        templateFile: `${TEMPLATE_PATH}/component.styles.ts.hbs`,
       },
     ]
 
+    // Create unit test
     if (isTestIncluded) {
       defaultActionList.push({
         type: 'add',

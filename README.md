@@ -3,7 +3,7 @@
 - [1. Overview](#1-overview)
   - [1.1 Resources](#11-resources)
   - [1.2 What can you learn?](#12-what-can-you-learn)
-- [2. How to init Chakra?](#2-how-to-init-chakra)
+- [2. How to init?](#2-how-to-init)
   - [2.1 Install library](#21-install-library)
   - [2.2 Config \& Setup](#22-config--setup)
     - [2.2.1 main.tsx](#221-maintsx)
@@ -43,14 +43,17 @@
 ## 1.2 What can you learn?
 
 - Chakra UI
+- @tanstack/react-table
 
-# 2. How to init Chakra?
+# 2. How to init?
 
 ## 2.1 Install library
 
 ```bash
 npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
 npm i @chakra-ui/icons
+
+npm install @tanstack/react-table
 ```
 
 ## 2.2 Config & Setup
