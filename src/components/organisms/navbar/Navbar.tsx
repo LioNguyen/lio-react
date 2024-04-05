@@ -1,8 +1,9 @@
 import './Navbar.styles.scss'
 
-import { FC, HTMLAttributes } from 'react'
+import { UnlockIcon } from '@chakra-ui/icons'
 import {
-  Box,
+  Avatar,
+  AvatarBadge,
   Button,
   Flex,
   HStack,
@@ -11,7 +12,7 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react'
-import { UnlockIcon } from '@chakra-ui/icons'
+import { FC, HTMLAttributes } from 'react'
 
 interface NavbarProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -38,9 +39,13 @@ export const Navbar: FC<NavbarProps> = () => {
         <Spacer />
 
         <HStack spacing="20px">
-          <Box bg="gray.200" p="10px">
-            M
-          </Box>
+          <Avatar name="Mario" src="/img/mario.png">
+            <AvatarBadge bg="teal" width="1.3em">
+              <Text color="white" fontSize="xs">
+                3
+              </Text>
+            </AvatarBadge>
+          </Avatar>
           <Text>lio.dev@gmail.com</Text>
           <Button colorScheme="purple" onClick={showToast}>
             Logout

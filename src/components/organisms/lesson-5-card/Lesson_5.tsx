@@ -3,6 +3,7 @@ import './Lesson_5.styles.scss'
 import { TaskType } from '@/types'
 import { EditIcon, ViewIcon } from '@chakra-ui/icons'
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -32,10 +33,8 @@ export const Lesson_5: FC<Lesson_5Props> = ({ className, task, ...props }) => {
       {...props}
     >
       <CardHeader>
-        <Flex>
-          <Box w="50px" h="50px">
-            <Text>AV</Text>
-          </Box>
+        <Flex gap={5}>
+          <Avatar name={task.author} src={task.img} />
           <Box>
             <Heading as="h3" size="sm">
               {task.title}

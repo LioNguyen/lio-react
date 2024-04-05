@@ -25,12 +25,17 @@
   - [3.5 Toast](#35-toast)
     - [3.5.1 Use toast in function component](#351-use-toast-in-function-component)
     - [3.5.2 Use toast outside component](#352-use-toast-outside-component)
+  - [3.6 Avatar](#36-avatar)
+- [4. How to custom theme?](#4-how-to-custom-theme)
+  - [4.1 Custom colors](#41-custom-colors)
+  - [4.2 fonts](#42-fonts)
 
 # 1. Overview
 
 ## 1.1 Resources
 
 - [Chakra UI | Official Document](https://chakra-ui.com/getting-started)
+- [Chakra UI Default Theme | Official Document](https://chakra-ui.com/docs/styled-system/theme)
 - [Chakra Icons | Official Document](https://chakra-ui.com/docs/components/icon/usage#all-icons)
 - [Chakra Toast | Official Document](https://chakra-ui.com/docs/components/toast/usage#standalone-toasts)
 - [Chakra UI Tutorial | Youtube](https://www.youtube.com/watch?v=iXsM6NkEmFc&list=PL4cUxeGkcC9hcnIeryurNMMcGBHp7AYlP&ab_channel=NetNinja)
@@ -438,4 +443,77 @@ toast({
   duration: 9000,
   isClosable: true,
 })
+```
+
+## 3.6 Avatar
+
+- If image url is invalid, `<Avatar />` component will show default image, with 1st letter of name (if any)
+- Use `<AvatarBadge />` to show small icon on the right bottom corner of `<Avatar />`
+
+```js
+// src/components/organisms/lesson-5-card/Lesson_5.tsx
+
+<Avatar name={task.author} src={task.img} />
+```
+
+```js
+// src/components/organisms/navbar/Navbar.tsx
+
+<Avatar name="Mario" src="/img/mario.png">
+  <AvatarBadge bg="teal" width="1.3em">
+    <Text color="white" fontSize="xs">
+      3
+    </Text>
+  </AvatarBadge>
+</Avatar>
+```
+
+# 4. How to custom theme?
+
+- Create theme with `extendTheme()` method
+- Create object for each property like `colors, fonts`
+- We can create new theme, or override default theme
+
+```js
+// src/main.tsx
+
+const theme = extendTheme({ colors, fonts })
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <ChakraProvider theme={theme}>
+    <App />
+  </ChakraProvider>
+)
+```
+
+## 4.1 Custom colors
+
+```js
+// src/main.tsx
+
+const colors = {
+  // Create new color
+  brand: {
+    900: '#024fc9',
+    800: '#0a69ff',
+    700: '#0f7cff',
+    600: '#1a8fff',
+    500: '#2b98ff',
+  },
+}
+```
+
+## 4.2 fonts
+
+```js
+// src/main.tsx
+
+const fonts = {
+  // Override default font
+  body: 'Tahoma',
+  heading: 'Courier New',
+
+  // Create new font
+  main: 'Menlo, monospace',
+}
 ```
