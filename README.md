@@ -26,9 +26,11 @@
     - [3.5.1 Use toast in function component](#351-use-toast-in-function-component)
     - [3.5.2 Use toast outside component](#352-use-toast-outside-component)
   - [3.6 Avatar](#36-avatar)
-- [4. How to custom theme?](#4-how-to-custom-theme)
-  - [4.1 Custom colors](#41-custom-colors)
-  - [4.2 fonts](#42-fonts)
+  - [3.7. How to custom theme?](#37-how-to-custom-theme)
+    - [3.7.1 Create custom colors, fonts or styles](#371-create-custom-colors-fonts-or-styles)
+    - [3.7.2 Create function to extend theme](#372-create-function-to-extend-theme)
+    - [3.7.3 Add custom theme into provider](#373-add-custom-theme-into-provider)
+- [4. How to use @tanstack/react-table?](#4-how-to-use-tanstackreact-table)
 
 # 1. Overview
 
@@ -39,6 +41,7 @@
 - [Chakra Icons | Official Document](https://chakra-ui.com/docs/components/icon/usage#all-icons)
 - [Chakra Toast | Official Document](https://chakra-ui.com/docs/components/toast/usage#standalone-toasts)
 - [Chakra UI Tutorial | Youtube](https://www.youtube.com/watch?v=iXsM6NkEmFc&list=PL4cUxeGkcC9hcnIeryurNMMcGBHp7AYlP&ab_channel=NetNinja)
+- [TanStack Table Tutorial | Youtube](https://youtu.be/CjqG277Hmgg?si=Xzw8ARrivdji4_g3)
 
 ## 1.2 What can you learn?
 
@@ -471,28 +474,17 @@ toast({
 </Avatar>
 ```
 
-# 4. How to custom theme?
+## 3.7. How to custom theme?
 
+- Create object for each property like `config` or `colors, fonts, styles`
+- In `config`, we can setup `initialColorMode` like `light, dark` or `useSystemColorMode`
 - Create theme with `extendTheme()` method
-- Create object for each property like `colors, fonts`
 - We can create new theme, or override default theme
 
-```js
-// src/main.tsx
-
-const theme = extendTheme({ colors, fonts })
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <ChakraProvider theme={theme}>
-    <App />
-  </ChakraProvider>
-)
-```
-
-## 4.1 Custom colors
+### 3.7.1 Create custom colors, fonts or styles
 
 ```js
-// src/main.tsx
+// src/theme/styles.ts
 
 const colors = {
   // Create new color
@@ -504,12 +496,6 @@ const colors = {
     500: '#2b98ff',
   },
 }
-```
-
-## 4.2 fonts
-
-```js
-// src/main.tsx
 
 const fonts = {
   // Override default font
@@ -519,4 +505,50 @@ const fonts = {
   // Create new font
   main: 'Menlo, monospace',
 }
+
+const styles = {
+  global: {
+    'html, body': {
+      // backgroundColor: 'gray.900',
+      // color: 'whiteAlpha.800',
+    },
+  },
+}
 ```
+
+### 3.7.2 Create function to extend theme
+
+```js
+// src/theme/index.ts
+
+import { extendTheme } from '@chakra-ui/react'
+import { colors, fonts, styles } from './styles'
+
+const config = {
+  initialColorMode: 'light',
+  useSystemColorMode: true,
+}
+
+const theme = extendTheme({
+  colors,
+  fonts,
+  styles,
+  config,
+})
+
+export default theme
+```
+
+### 3.7.3 Add custom theme into provider
+
+```js
+// src/main.tsx
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <ChakraProvider theme={theme}>
+    <App />
+  </ChakraProvider>
+)
+```
+
+# 4. How to use @tanstack/react-table?
