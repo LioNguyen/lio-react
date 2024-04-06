@@ -31,6 +31,19 @@
     - [3.7.2 Create function to extend theme](#372-create-function-to-extend-theme)
     - [3.7.3 Add custom theme into provider](#373-add-custom-theme-into-provider)
 - [4. How to use @tanstack/react-table?](#4-how-to-use-tanstackreact-table)
+  - [4.1 Create type \& store](#41-create-type--store)
+    - [4.1.1 Re-declare type of table module](#411-re-declare-type-of-table-module)
+    - [4.1.2 Create table type](#412-create-table-type)
+    - [4.1.3 Create table store](#413-create-table-store)
+  - [4.2 Create data and column for table](#42-create-data-and-column-for-table)
+    - [4.2.1 Create API service to get data for table](#421-create-api-service-to-get-data-for-table)
+    - [4.2.2 Get data using `useQuery()` hook to fetch API](#422-get-data-using-usequery-hook-to-fetch-api)
+    - [4.2.3 Create column for table](#423-create-column-for-table)
+  - [4.3 Create table](#43-create-table)
+    - [4.3.1 Create hook](#431-create-hook)
+    - [4.3.2 Create component](#432-create-component)
+      - [4.3.2.1 Table Header](#4321-table-header)
+      - [4.3.2.2 Table Body](#4322-table-body)
 
 # 1. Overview
 
@@ -552,3 +565,215 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ```
 
 # 4. How to use @tanstack/react-table?
+
+## 4.1 Create type & store
+
+### 4.1.1 Re-declare type of table module
+
+- This file is used to extend the types of react-table
+- Must re-export type RowData as the same as default export from react-table to make the module '@tanstack/table-core' extension works
+
+```js
+// src/types/react-table.d.ts
+
+export type RowData = unknown | object | any[]
+declare module '@tanstack/table-core' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: any) => void
+  }
+}
+```
+
+### 4.1.2 Create table type
+
+```js
+// src/types/table.ts
+
+export interface TableDatum {
+  task: string
+  status: Status
+  due: null | string
+  notes: string
+}
+
+export interface Status {
+  id: number
+  code: string
+  name: string
+  color: string
+}
+
+export interface TableStore {
+  statuses: Status[]
+  createStatus: (statuses: Status[]) => void
+}
+```
+
+### 4.1.3 Create table store
+
+```js
+// src/store/tableStore.ts
+
+import { create } from 'zustand'
+
+import { Status, TableStore } from '@/types'
+
+export const useTableStore = create<TableStore>((set) => ({
+  statuses: [],
+  createStatus: (statuses: Status[]) => set({ statuses }),
+}))
+```
+
+## 4.2 Create data and column for table
+
+### 4.2.1 Create API service to get data for table
+
+```js
+// src/services/tableApi.ts
+
+export class TableApi {
+  async getTableData() {
+    const res = await axios.get(TABLE_DATA_API_ENDPOINT.tableData)
+
+    return res.data
+  }
+  async getStatuses() {
+    const res = await axios.get<Status[]>(TABLE_DATA_API_ENDPOINT.statuses)
+
+    return res.data
+  }
+}
+```
+
+### 4.2.2 Get data using `useQuery()` hook to fetch API
+
+```js
+// src/components/pages/table/index.tsx
+
+const { data: tableData } = useQuery({
+  queryKey: ['tableData'],
+  queryFn: tableApi.getTableData,
+})
+const { data: statuses } = useQuery<Status[]>({
+  queryKey: ['statuses'],
+  queryFn: tableApi.getStatuses,
+})
+
+// Handle data and statuses before rendering table
+const data = useMemo(() => {
+  if (!tableData || !statuses) return null
+
+  return tableData.map((data: any) => ({
+    ...data,
+    status: statuses.find((status) => status.code === data.status),
+  }))
+}, [tableData, statuses])
+```
+
+### 4.2.3 Create column for table
+
+- Use `ColumnDef` type
+- Colum item includes: `accessorKey, header, cell`
+
+```js
+// src/components/pages/table/index.tsx
+
+const columns: ColumnDef<TableDatum, unknown>[] = [
+  {
+    accessorKey: 'task',
+    header: 'Task',
+    size: 225,
+    cell: EditableCell,
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: StatusCell,
+  },
+  {
+    accessorKey: 'due',
+    header: 'Due',
+    cell: (props) => <div>{props.getValue() as string}</div>,
+  },
+  {
+    accessorKey: 'notes',
+    header: 'Notes',
+    cell: (props) => <div>{props.getValue() as string}</div>,
+  },
+]
+```
+
+## 4.3 Create table
+
+- Use `useReactTable()` hook
+- We can define more method for `meta` property in [Declare type of table module](#411-re-declare-type-of-table-module)
+
+### 4.3.1 Create hook
+
+```js
+// src/components/organisms/task-table/index.tsx
+
+const table = useReactTable({
+  data: tableData,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+  columnResizeMode: 'onChange',
+  meta: {
+    updateData: (rowIndex, columnId, value) => {
+      setTableData((prev: any) =>
+        prev.map((row: any, index: number) =>
+          index === rowIndex ? { ...prev[rowIndex], [columnId]: value } : row,
+        ),
+      )
+    },
+  },
+})
+```
+
+### 4.3.2 Create component
+
+#### 4.3.2.1 Table Header
+
+- Use `table.getHeaderGroups()` -> `headers` in each header group -> `column.columnDef.header` in each header
+
+```js
+// // src/components/organisms/task-table/index.tsx
+
+<Box className="table">
+  {table.getHeaderGroups().map((headerGroup) => (
+    <Box className="tr" key={headerGroup.id}>
+      {headerGroup.headers.map((header) => (
+        <Box className="th" key={header.id} w={header.getSize()}>
+          {header.column.columnDef.header as string}
+          <Box
+            className={`resizer ${header.column.getIsResizing() ? 'isResizing' : ''}`}
+            onMouseDown={header.getResizeHandler()}
+            onTouchStart={header.getResizeHandler()}
+          />
+        </Box>
+      ))}
+    </Box>
+  ))}
+</Box>
+```
+
+#### 4.3.2.2 Table Body
+
+- Use `table.getRowModel().rows` -> `row.getVisibleCells()` in each row -> `column.columnDef.cell` in each cell
+- Use `flexRender()` method to render data in table body
+
+```js
+// // src/components/organisms/task-table/index.tsx
+
+<Box className="table">
+  {(table.getRowModel().rows || []).map((row) => (
+    <Box className="tr" key={row.id}>
+      {row.getVisibleCells().map((cell) => (
+        <Box className="td" key={cell.id} w={cell.column.getSize()}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </Box>
+      ))}
+    </Box>
+  ))}
+</Box>
+```

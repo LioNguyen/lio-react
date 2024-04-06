@@ -1,6 +1,7 @@
-import { TaskType } from '@/types'
-import { createAxios } from './api'
 import { ActionFunctionArgs, redirect } from 'react-router-dom'
+
+import { createAxios } from '@/services/api'
+import { TaskType } from '@/types'
 
 const axios = createAxios()
 

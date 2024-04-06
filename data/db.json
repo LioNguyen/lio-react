@@ -74,23 +74,19 @@
   "tableData": [
     {
       "task": "Add a New Feature",
-      "status": { "id": 1, "name": "On Deck", "color": "blue.300" },
+      "status": "STATUS_ON_DECK",
       "due": "2023/10/15",
       "notes": "This is a note"
     },
     {
       "task": "Write Integration Tests",
-      "status": {
-        "id": 2,
-        "name": "In Progress",
-        "color": "yellow.400"
-      },
+      "status": "STATUS_IN_PROGRESS",
       "due": null,
       "notes": "Use Jest"
     },
     {
       "task": "Add Instagram Integration",
-      "status": { "id": 4, "name": "Deployed", "color": "green.300" },
+      "status": "STATUS_DEPLOYED",
       "due": null,
       "notes": ""
     },
@@ -102,7 +98,7 @@
     },
     {
       "task": "Refactor API Endpoints",
-      "status": { "id": 3, "name": "Testing", "color": "pink.300" },
+      "status": "STATUS_TESTING",
       "due": null,
       "notes": ""
     },
@@ -114,13 +110,35 @@
     },
     {
       "task": "Update NPM Packages",
-      "status": {
-        "id": 2,
-        "name": "In Progress",
-        "color": "yellow.400"
-      },
+      "status": "STATUS_IN_PROGRESS",
       "due": null,
       "notes": "Upgrade React & Chakra UI"
+    }
+  ],
+  "statuses": [
+    {
+      "id": 1,
+      "code": "STATUS_ON_DECK",
+      "name": "On Deck",
+      "color": "blue.300"
+    },
+    {
+      "id": 2,
+      "code": "STATUS_IN_PROGRESS",
+      "name": "In Progress",
+      "color": "yellow.400"
+    },
+    {
+      "id": 3,
+      "code": "STATUS_TESTING",
+      "name": "Testing",
+      "color": "pink.300"
+    },
+    {
+      "id": 4,
+      "code": "STATUS_DEPLOYED",
+      "name": "Deployed",
+      "color": "green.300"
     }
   ]
 }
