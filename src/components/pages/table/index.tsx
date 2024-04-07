@@ -3,14 +3,14 @@ import './styles.ts'
 import clsx from 'clsx'
 import { FC, HTMLAttributes } from 'react'
 
-import { TaskTable } from '@/components/organisms/task-table/index.tsx'
+import { Lesson_8 } from '@/components/organisms/lesson-8-table'
 
 interface TableProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Table: FC<TableProps> = ({ className, ...props }) => {
   return (
     <div className={clsx('table', className)} {...props}>
-      <TaskTable />
+      <Lesson_8 />
     </div>
   )
 }

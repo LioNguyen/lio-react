@@ -26,24 +26,29 @@
     - [3.5.1 Use toast in function component](#351-use-toast-in-function-component)
     - [3.5.2 Use toast outside component](#352-use-toast-outside-component)
   - [3.6 Avatar](#36-avatar)
-  - [3.7. How to custom theme?](#37-how-to-custom-theme)
-    - [3.7.1 Create custom colors, fonts or styles](#371-create-custom-colors-fonts-or-styles)
-    - [3.7.2 Create function to extend theme](#372-create-function-to-extend-theme)
-    - [3.7.3 Add custom theme into provider](#373-add-custom-theme-into-provider)
-- [4. How to use @tanstack/react-table?](#4-how-to-use-tanstackreact-table)
-  - [4.1 Create type \& store](#41-create-type--store)
-    - [4.1.1 Re-declare type of table module](#411-re-declare-type-of-table-module)
-    - [4.1.2 Create table type](#412-create-table-type)
-    - [4.1.3 Create table store](#413-create-table-store)
-  - [4.2 Create data and column for table](#42-create-data-and-column-for-table)
-    - [4.2.1 Create API service to get data for table](#421-create-api-service-to-get-data-for-table)
-    - [4.2.2 Get data using `useQuery()` hook to fetch API](#422-get-data-using-usequery-hook-to-fetch-api)
-    - [4.2.3 Create column for table](#423-create-column-for-table)
-  - [4.3 Create table](#43-create-table)
-    - [4.3.1 Create hook](#431-create-hook)
-    - [4.3.2 Create component](#432-create-component)
-      - [4.3.2.1 Table Header](#4321-table-header)
-      - [4.3.2.2 Table Body](#4322-table-body)
+  - [3.7 Table](#37-table)
+    - [3.7.1 Create input data type for table](#371-create-input-data-type-for-table)
+    - [3.7.2 Create data and columns for table](#372-create-data-and-columns-for-table)
+    - [3.7.3 Create table with `useReactTable()` hook](#373-create-table-with-usereacttable-hook)
+- [4. How to custom Chakra theme?](#4-how-to-custom-chakra-theme)
+  - [4.1 Create custom colors, fonts or styles](#41-create-custom-colors-fonts-or-styles)
+  - [4.2 Create function to extend theme](#42-create-function-to-extend-theme)
+  - [4.3 Add custom theme into provider](#43-add-custom-theme-into-provider)
+- [5. How to use @tanstack/react-table?](#5-how-to-use-tanstackreact-table)
+- [6. Complex @tanstack/react-table](#6-complex-tanstackreact-table)
+  - [6.1 Create type \& store](#61-create-type--store)
+    - [6.1.1 Re-declare type of table module](#611-re-declare-type-of-table-module)
+    - [6.1.2 Create table type](#612-create-table-type)
+    - [6.1.3 Create table store](#613-create-table-store)
+  - [6.2 Create data and column for table](#62-create-data-and-column-for-table)
+    - [6.2.1 Create API service to get data for table](#621-create-api-service-to-get-data-for-table)
+    - [6.2.2 Get data using `useQuery()` hook to fetch API](#622-get-data-using-usequery-hook-to-fetch-api)
+    - [6.2.3 Create column for table](#623-create-column-for-table)
+  - [6.3 Create table](#63-create-table)
+    - [6.3.1 Create hook](#631-create-hook)
+    - [6.3.2 Create component](#632-create-component)
+      - [6.3.2.1 Table Header](#6321-table-header)
+      - [6.3.2.2 Table Body](#6322-table-body)
 
 # 1. Overview
 
@@ -487,14 +492,188 @@ toast({
 </Avatar>
 ```
 
-## 3.7. How to custom theme?
+## 3.7 Table
+
+- Integrate `@tanstack/react-table` into `Chakra Table`
+- Use [`<TableContainer />`](https://chakra-ui.com/docs/components/table/usage#table-container) to wrap all table
+- Use [`<Table />`](https://chakra-ui.com/docs/components/table/usage#table-container) with `variant, colorScheme, and size` props
+- Use `<Thead />, <Tbody />, <Tfoot />` for header, body and footer of table
+- Use `<Tr />, <Th />, <Td />` for row & cells of each row
+- Use `colSpan` prop to **group cells**
+
+```js
+const Table = () => {
+  return (
+    <TableContainer>
+      <Table variant="simple" colorScheme="gray" size="md">
+        <TableCaption>Imperial to metric conversion factors</TableCaption>
+
+        {/* Table Head */}
+        <Thead>
+          <Tr>
+            <Th>To convert</Th>
+            <Th>into</Th>
+            <Th isNumeric>multiply by</Th>
+          </Tr>
+        </Thead>
+
+        {/* Table Body */}
+        <Tbody>
+          <Tr>
+            <Td>inches</Td>
+            <Td>millimetres (mm)</Td>
+            <Td isNumeric>25.4</Td>
+          </Tr>
+        </Tbody>
+
+        {/* Table Foot */}
+        <Tfoot>
+          <Tr>
+            <Th>To convert</Th>
+            <Th>into</Th>
+            <Th isNumeric>multiply by</Th>
+          </Tr>
+        </Tfoot>
+      </Table>
+    </TableContainer>
+  )
+}
+```
+
+### 3.7.1 Create input data type for table
+
+```js
+// src/components/organisms/lesson-8-table/index.tsx
+
+interface User {
+  id: string
+  name: string
+  email: string
+  country: string
+}
+```
+
+### 3.7.2 Create data and columns for table
+
+- Data got from API must match type in step 3.7.1
+- Use `ColumnDef` to define type for column
+
+```js
+// src/components/organisms/lesson-8-table/index.tsx
+
+import { ColumnDef } from '@tanstack/react-table'
+
+const columns: ColumnDef<User, any>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    size: 300,
+    cell: (props) => <Text>{props.getValue()}</Text>,
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+    cell: (props) => <Text>{props.getValue()}</Text>,
+  },
+  {
+    accessorKey: 'country',
+    header: 'Country',
+    cell: (props) => <Text>{props.getValue()}</Text>,
+  },
+]
+```
+
+### 3.7.3 Create table with `useReactTable()` hook
+
+- Must have options for `useReactTable()` hook: `columns, data & getCoreRowModel`
+- If rendering headers, cells, or footers with **custom** markup, use `flexRender` instead of `cell.getValue()` or `cell.renderValue()`.
+- For **table header**: `table.getHeaderGroups()` -> `headers` -> `header.column.columnDef.header`
+- For **table body**: `userTable.getRowModel().rows` -> `getVisibleCells()` -> `cell.column.columnDef.cell` + `cell.getContext()`
+
+```js
+// src/components/organisms/lesson-8-table/index.tsx
+
+export const Lesson_8: FC<Lesson_8Props> = ({ className, ...props }) => {
+  const [currentRowId, setCurrentRowId] = useState('')
+
+  const userTable = useReactTable({
+    columns,
+    data: User,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
+  return (
+    <TableContainer className={clsx('lesson-8', className)} {...props}>
+      <Table
+        variant="striped"
+        colorScheme="gray"
+        size="lg"
+      >
+        <TableCaption>Table Caption</TableCaption>
+
+        {/* Table Head */}
+        <Thead>
+          {userTable.getHeaderGroups().map((headerGroup) => (
+            <Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <Th key={header.id}>
+                  {header.column.columnDef.header as ReactNode}
+                </Th>
+              ))}
+            </Tr>
+          ))}
+        </Thead>
+
+        {/* Table Body */}
+        <Tbody>
+          {userTable.getRowModel().rows.map((row) => (
+            <Tr
+              key={row.id}
+              _hover={{
+                bg: 'teal.50',
+                cursor: 'pointer',
+              }}
+            >
+              {row.id === currentRowId ? (
+                <Td colSpan={3}>
+                  <Flex justifyContent="center" gap={5}>
+                    <Button onClick={() => setCurrentRowId('')}>Cancel</Button>
+                    <Button>Detail</Button>
+                  </Flex>
+                </Td>
+              ) : (
+                row.getVisibleCells().map((cell) => (
+                  <Td key={cell.id} onClick={() => setCurrentRowId(row.id)}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </Td>
+                ))
+              )}
+            </Tr>
+          ))}
+        </Tbody>
+
+        {/* Table Foot */}
+        <Tfoot>
+          <Tr>
+            <Th>To convert</Th>
+            <Th>into</Th>
+            <Th isNumeric>multiply by</Th>
+          </Tr>
+        </Tfoot>
+      </Table>
+    </TableContainer>
+  )
+}
+```
+
+# 4. How to custom Chakra theme?
 
 - Create object for each property like `config` or `colors, fonts, styles`
 - In `config`, we can setup `initialColorMode` like `light, dark` or `useSystemColorMode`
 - Create theme with `extendTheme()` method
 - We can create new theme, or override default theme
 
-### 3.7.1 Create custom colors, fonts or styles
+### 4.1 Create custom colors, fonts or styles
 
 ```js
 // src/theme/styles.ts
@@ -529,7 +708,7 @@ const styles = {
 }
 ```
 
-### 3.7.2 Create function to extend theme
+### 4.2 Create function to extend theme
 
 ```js
 // src/theme/index.ts
@@ -552,7 +731,7 @@ const theme = extendTheme({
 export default theme
 ```
 
-### 3.7.3 Add custom theme into provider
+### 4.3 Add custom theme into provider
 
 ```js
 // src/main.tsx
@@ -564,11 +743,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 )
 ```
 
-# 4. How to use @tanstack/react-table?
+# 5. How to use @tanstack/react-table?
 
-## 4.1 Create type & store
+# 6. Complex @tanstack/react-table
 
-### 4.1.1 Re-declare type of table module
+## 6.1 Create type & store
+
+### 6.1.1 Re-declare type of table module
 
 - This file is used to extend the types of react-table
 - Must re-export type RowData as the same as default export from react-table to make the module '@tanstack/table-core' extension works
@@ -584,7 +765,7 @@ declare module '@tanstack/table-core' {
 }
 ```
 
-### 4.1.2 Create table type
+### 6.1.2 Create table type
 
 ```js
 // src/types/table.ts
@@ -609,7 +790,7 @@ export interface TableStore {
 }
 ```
 
-### 4.1.3 Create table store
+### 6.1.3 Create table store
 
 ```js
 // src/store/tableStore.ts
@@ -624,9 +805,9 @@ export const useTableStore = create<TableStore>((set) => ({
 }))
 ```
 
-## 4.2 Create data and column for table
+## 6.2 Create data and column for table
 
-### 4.2.1 Create API service to get data for table
+### 6.2.1 Create API service to get data for table
 
 ```js
 // src/services/tableApi.ts
@@ -645,7 +826,7 @@ export class TableApi {
 }
 ```
 
-### 4.2.2 Get data using `useQuery()` hook to fetch API
+### 6.2.2 Get data using `useQuery()` hook to fetch API
 
 ```js
 // src/components/pages/table/index.tsx
@@ -670,7 +851,7 @@ const data = useMemo(() => {
 }, [tableData, statuses])
 ```
 
-### 4.2.3 Create column for table
+### 6.2.3 Create column for table
 
 - Use `ColumnDef` type
 - Colum item includes: `accessorKey, header, cell`
@@ -703,12 +884,12 @@ const columns: ColumnDef<TableDatum, unknown>[] = [
 ]
 ```
 
-## 4.3 Create table
+## 6.3 Create table
 
 - Use `useReactTable()` hook
 - We can define more method for `meta` property in [Declare type of table module](#411-re-declare-type-of-table-module)
 
-### 4.3.1 Create hook
+### 6.3.1 Create hook
 
 ```js
 // src/components/organisms/task-table/index.tsx
@@ -730,9 +911,9 @@ const table = useReactTable({
 })
 ```
 
-### 4.3.2 Create component
+### 6.3.2 Create component
 
-#### 4.3.2.1 Table Header
+#### 6.3.2.1 Table Header
 
 - Use `table.getHeaderGroups()` -> `headers` in each header group -> `column.columnDef.header` in each header
 
@@ -757,7 +938,7 @@ const table = useReactTable({
 </Box>
 ```
 
-#### 4.3.2.2 Table Body
+#### 6.3.2.2 Table Body
 
 - Use `table.getRowModel().rows` -> `row.getVisibleCells()` in each row -> `column.columnDef.cell` in each cell
 - Use `flexRender()` method to render data in table body

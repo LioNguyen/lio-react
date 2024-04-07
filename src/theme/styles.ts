@@ -20,6 +20,9 @@ const fonts = {
 
 const styles = {
   global: {
+    '*': {
+      boxSizing: 'border-box',
+    },
     'html, body': {
       // backgroundColor: 'gray.900',
       // color: 'whiteAlpha.800',
