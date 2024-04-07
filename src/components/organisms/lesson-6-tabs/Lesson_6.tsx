@@ -1,17 +1,5 @@
 import './Lesson_6.styles.scss'
 
-import clsx from 'clsx'
-import { FC, HTMLAttributes } from 'react'
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  List,
-  ListItem,
-  ListIcon,
-} from '@chakra-ui/react'
 import {
   ChatIcon,
   CheckCircleIcon,
@@ -19,6 +7,18 @@ import {
   StarIcon,
   WarningIcon,
 } from '@chakra-ui/icons'
+import {
+  List,
+  ListIcon,
+  ListItem,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from '@chakra-ui/react'
+import clsx from 'clsx'
+import { FC } from 'react'
 
 interface Lesson_6Props {
   className?: string

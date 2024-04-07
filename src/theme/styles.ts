@@ -30,14 +30,14 @@ const styles = {
     svg: {
       cursor: 'pointer',
     },
-    '.table': {
-      // border: '1px solid #424242',
-    },
+    // '.table': {
+    //   border: '1px solid #424242',
+    // },
     '.tr': {
       display: 'flex',
       width: 'fit-content',
     },
-    '.th, .td': { boxShadow: 'inset 0 0 0 1px #424242' },
+    '.th, .td': { boxShadow: 'inset 0 0 0 0.5px #424242' },
     '.th': {
       position: 'relative',
       display: 'flex',

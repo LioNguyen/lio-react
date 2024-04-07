@@ -1,10 +1,10 @@
-import { Box, SimpleGrid } from '@chakra-ui/react'
+import { SimpleGrid } from '@chakra-ui/react'
 import './Lesson_3.styles.scss'
 
+import { TaskType } from '@/types'
 import clsx from 'clsx'
 import { FC, HTMLAttributes } from 'react'
 import { Lesson_5 } from '../lesson-5-card'
-import { TaskType } from '@/types'
 
 interface Lesson_3Props extends HTMLAttributes<HTMLDivElement> {
   taskLists: TaskType[]

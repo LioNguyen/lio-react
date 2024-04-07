@@ -1,5 +1,5 @@
 import { createAxios } from '@/services/api'
-import { Status } from '@/types'
+import { Status, TableDatum } from '@/types'
 
 const axios = createAxios()
 
@@ -10,7 +10,7 @@ const TABLE_DATA_API_ENDPOINT = {
 
 export class TableApi {
   async getTableData() {
-    const res = await axios.get(TABLE_DATA_API_ENDPOINT.tableData)
+    const res = await axios.get<TableDatum[]>(TABLE_DATA_API_ENDPOINT.tableData)
 
     return res.data
   }

@@ -567,7 +567,6 @@ const columns: ColumnDef<User, any>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
-    size: 300,
     cell: (props) => <Text>{props.getValue()}</Text>,
   },
   {
@@ -587,8 +586,8 @@ const columns: ColumnDef<User, any>[] = [
 
 - Must have options for `useReactTable()` hook: `columns, data & getCoreRowModel`
 - If rendering headers, cells, or footers with **custom** markup, use `flexRender` instead of `cell.getValue()` or `cell.renderValue()`.
-- For **table header**: `table.getHeaderGroups()` -> `headers` -> `header.column.columnDef.header`
-- For **table body**: `userTable.getRowModel().rows` -> `getVisibleCells()` -> `cell.column.columnDef.cell` + `cell.getContext()`
+- For **table header**: `table.getHeaderGroups()` -> `headers` -> `column.columnDef.header`
+- For **table body**: `userTable.getRowModel().rows` -> `getVisibleCells()` -> `column.columnDef.cell` + `cell.getContext()`, using `flexRender()`
 
 ```js
 // src/components/organisms/lesson-8-table/index.tsx
@@ -635,6 +634,7 @@ export const Lesson_8: FC<Lesson_8Props> = ({ className, ...props }) => {
               }}
             >
               {row.id === currentRowId ? (
+                // Render detail panel if click row
                 <Td colSpan={3}>
                   <Flex justifyContent="center" gap={5}>
                     <Button onClick={() => setCurrentRowId('')}>Cancel</Button>
@@ -642,6 +642,7 @@ export const Lesson_8: FC<Lesson_8Props> = ({ className, ...props }) => {
                   </Flex>
                 </Td>
               ) : (
+                // Render table data
                 row.getVisibleCells().map((cell) => (
                   <Td key={cell.id} onClick={() => setCurrentRowId(row.id)}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
