@@ -9,7 +9,8 @@
     - [2.2.1 main.tsx](#221-maintsx)
 - [3. How to use Chakra?](#3-how-to-use-chakra)
   - [3.1 How to style?](#31-how-to-style)
-    - [3.1.1 Create style object](#311-create-style-object)
+    - [3.1.1 Create style object for inline style](#311-create-style-object-for-inline-style)
+    - [3.1.2 Create custom component with chakra factory](#312-create-custom-component-with-chakra-factory)
   - [3.2 Layout](#32-layout)
     - [3.2.1 Container](#321-container)
     - [3.2.2 Flex](#322-flex)
@@ -104,31 +105,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 ## 3.1 How to style?
 
-### 3.1.1 Create style object
-
-```js
-import { SystemStyleObject } from '@chakra-ui/react'
-
-  const boxStyles: SystemStyleObject = {
-    bg: 'purple.400',
-    color: 'white',
-    m: '10px',
-    p: '10px',
-    textAlign: 'center',
-    filter: 'blur(2px)',
-    ':hover': {
-      color: 'black',
-      bg: 'blue.200',
-    },
-  }
-```
-
-## 3.2 Layout
-
-### 3.2.1 Container
+### 3.1.1 Create style object for inline style
 
 ```js
 // src/components/organisms/lesson-1-components-style-props/Lesson_1.tsx
+
+import { SystemStyleObject } from '@chakra-ui/react'
 
 export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
   const boxStyles: SystemStyleObject = {
@@ -145,6 +127,41 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
   }
 
   return (
+    <Container>
+      <Box sx={boxStyles}>Hello, Lio!</Box>
+    </Container>
+  )
+}
+```
+
+### 3.1.2 Create custom component with chakra factory
+
+```js
+// src/components/pages/css-sample/styles.ts
+
+export const ContainerWrapper = chakra(Flex, {
+  baseStyle: {
+    margin: '15px 0',
+    width: 'fit-content',
+    // Apply styles to the .box when its parent is hovered and it is not hovered
+    '&:hover > .box:not(:hover)': {
+      filter: 'blur(5px)',
+      transform: 'scale(0.9)',
+    },
+  },
+})
+```
+
+## 3.2 Layout
+
+### 3.2.1 Container
+
+```js
+// src/components/organisms/lesson-1-components-style-props/Lesson_1.tsx
+
+export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
+
+  return (
     <Container
       className={clsx('lesson-1', className)}
       as="section"
@@ -156,10 +173,6 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
       <Heading my="30px" p="10px">
         Chakra UI Components
       </Heading>
-
-      <Box bg="orange" my="30px" p="20px">
-        <Text color="white">This is a box</Text>
-      </Box>
     </Container>
   )
 }
@@ -273,6 +286,8 @@ export const Lesson_3: FC<Lesson_3Props> = ({ className, ...props }) => {
 ```
 
 ## 3.3 Typography
+
+- Default `<Heading />` is `<h2 />`
 
 ```js
 import { Heading, Text } from '@chakra-ui/react'
@@ -429,7 +444,7 @@ export const Navbar: FC<NavbarProps> = () => {
   return (
     <>
       <Flex p="10px" alignItems="center">
-          // Your code
+          {/* Your code */}
 
           <Button colorScheme="purple" onClick={showToast}>
             Logout

@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import { Create } from '@/components/pages/create'
+import { CssSample } from '@/components/pages/css-sample'
 import { Dashboard } from '@/components/pages/dashboard'
 import { Error } from '@/components/pages/error'
 import { Profile } from '@/components/pages/profile'
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
       <Route path="create" element={<Create />} action={taskApi.createTask} />
       <Route path="profile" element={<Profile />} />
       <Route path="table" element={<Table />} />
+      <Route path="css-sample" element={<CssSample />} />
     </Route>,
   ),
 )

@@ -1,4 +1,4 @@
-import './RootLayout.styles.scss'
+import './styles.ts'
 
 import { Grid, GridItem } from '@chakra-ui/react'
 import clsx from 'clsx'
@@ -14,13 +14,17 @@ export const RootLayout: FC<RootLayoutProps> = ({ className, ...props }) => {
   return (
     <Grid
       className={clsx('root-layout', className)}
-      templateColumns="repeat(6,1fr)"
+      // Divided into 6 pairs of columns, each pair has 1fr and 3fr ratio
+      // gridTemplateColumns="repeat(6,1fr 3fr)"
+
+      // Divided into 6 columns, each column has 1fr ratio
+      gridTemplateColumns="repeat(6,1fr)"
       {...props}
     >
       <GridItem
         as="aside"
         colSpan={{ base: 6, lg: 2, xl: 1 }}
-        bg="brand.600"
+        bg="brand.900"
         minH={{ lg: '100vh' }}
         p={{ base: '20px', lg: '30px' }}
       >
