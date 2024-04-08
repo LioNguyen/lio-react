@@ -1,7 +1,12 @@
+import { Colors } from '@/components/molecules/colors'
+
+/**
+ * https://tailwindcss.com/docs/customizing-colors
+ */
 function App() {
   return (
     <>
-      <h1>Vite + React</h1>
+      <Colors />
     </>
   )
 }
