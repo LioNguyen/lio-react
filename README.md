@@ -136,6 +136,8 @@ export const Lesson_1: FC<Lesson_1Props> = ({ className, ...props }) => {
 
 ### 3.1.2 Create custom component with chakra factory
 
+- Custom style must be put in `baseStyle` property
+
 ```js
 // src/components/pages/css-sample/styles.ts
 
