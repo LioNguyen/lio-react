@@ -50,6 +50,14 @@ export default {
      * Extend the default Tailwind CSS theme here
      */
     extend: {
+      // Extend borderRadius
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+
+      // START: extend colors
       colors: {
         light: '#FEFDED',
         border: 'hsl(var(--border))',
@@ -92,11 +100,20 @@ export default {
           foreground: 'hsl(var(--card-foreground))',
         },
       },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+      // END: extend colors
+
+      // START: extend typography
+      fontSize: {
+        small: '14px',
+        normal: '16px',
+        subtitle: '20px',
+        title: '24px',
       },
+
+      lineHeight: {
+        normal: '24px',
+      },
+      // END: extend typography
 
       keyframes: {
         'accordion-down': {
@@ -112,6 +129,8 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+
+      // Extend screens
       screens: {
         tablet: [
           { min: '640px', max: '767px' },

@@ -15,6 +15,9 @@
   - [4.1 Colors](#41-colors)
     - [4.1.1 Basic usage](#411-basic-usage)
     - [4.1.2 How to override or create new colors?](#412-how-to-override-or-create-new-colors)
+  - [4.2 Typography](#42-typography)
+    - [4.2.1 Basic usage](#421-basic-usage)
+    - [4.2.2 How to override or create typography style?](#422-how-to-override-or-create-typography-style)
 
 # 1. Overview
 
@@ -152,6 +155,75 @@ export default {
           darker: '#003C43',
         },
         light: '#FEFDED',
+      },
+    },
+  },
+}
+```
+
+## 4.2 Typography
+
+### 4.2.1 Basic usage
+
+- Use `font-[family]` for `font-family`
+- Use `font-[weight]` for `font-weight`
+- Use `text-[size]` for `font-size`
+- Use `leading-[...]` for `line-height`
+- Use `line-clamp` for `ellipsis` in multi-line
+
+```js
+// src/components/molecules/typography/index.tsx
+
+export const Typography: FC<TypographyProps> = ({ className, ...props }) => {
+  return (
+    <div className={clsx('typography', className)} {...props}>
+      <h3 className="title font-mono">Typography</h3>
+      <h3 className="text-xl">Title 3</h3>
+      <p className="text-base">A regular paragraph</p>
+      <p className="text-sm">A description paragraph</p>
+      <p className="text-xs">A little note</p>
+      <p className="text-normal leading-normal line-clamp-3 w-[500px]">
+        Nulla dolor velit adipisicing duis excepteur esse in duis nostrud
+        occaecat mollit incididunt deserunt sunt. Ut ut sunt laborum ex occaecat
+        eu tempor labore enim adipisicing minim ad. Est in quis eu dolore
+        occaecat excepteur fugiat dolore nisi aliqua fugiat enim ut cillum.
+        Labore enim duis nostrud eu. Est ut eiusmod consequat irure quis
+        deserunt ex. Enim laboris dolor magna pariatur. Dolor et ad sint
+        voluptate sunt elit mollit officia ad enim sit consectetur enim.
+      </p>
+    </div>
+  )
+}
+```
+
+### 4.2.2 How to override or create typography style?
+
+```js
+// tailwind.config.js
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    /**
+     * Overwrite the default Tailwind CSS theme here
+     */
+    fontSize: {},
+    lineHeight: {},
+
+    /**
+     * Extend the default Tailwind CSS theme here
+     */
+    extend: {
+      fontSize: {
+        small: '14px',
+        normal: '16px',
+        subtitle: '20px',
+        title: '24px',
+      },
+
+      lineHeight: {
+        normal: '24px',
       },
     },
   },
