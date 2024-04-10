@@ -115,6 +115,19 @@ export default {
       },
       // END: extend typography
 
+      // START: extend margin, padding, width, height, left, right, top, bottom
+      spacing: {
+        0: '0px',
+        1: '1px',
+        2: '2px',
+        4: '4px',
+        8: '8px',
+        12: '12px',
+        16: '16px',
+        32: '32px',
+      },
+      // END: extend margin, padding, width, height, left, right, top, bottom
+
       keyframes: {
         'accordion-down': {
           from: { height: '0' },

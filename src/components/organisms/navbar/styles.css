@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+  .nav-item {
+    @apply pb-8;
+
+    a {
+      @apply text-secondary-dark relative;
+      &.active {
+        @apply text-secondary-darker font-bold;
+      }
+      &::after {
+        @apply bg-secondary-dark absolute left-0 -bottom-4 w-0 h-2 transition-all duration-500 ease-in-out;
+        content: '';
+      }
+      &:hover {
+        &::after {
+          @apply w-full;
+        }
+      }
+    }
+  }
+}

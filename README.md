@@ -6,11 +6,10 @@
 - [2. How to init?](#2-how-to-init)
   - [2.1 Install library](#21-install-library)
   - [2.2 Config \& Setup](#22-config--setup)
-    - [2.2.1 tailwind.config.js](#221-tailwindconfigjs)
-    - [2.2.2 src/globals.css](#222-srcglobalscss)
-- [3. How to setup base and components style using Functions and Directives?](#3-how-to-setup-base-and-components-style-using-functions-and-directives)
-  - [3.1 base](#31-base)
-  - [3.2 components](#32-components)
+    - [2.2.1 Config theme via tailwind.config.js](#221-config-theme-via-tailwindconfigjs)
+    - [2.2.2. How to create styles?](#222-how-to-create-styles)
+      - [2.2.2.1 base](#2221-base)
+      - [2.2.2.2 components](#2222-components)
 - [4. How to use Tailwind?](#4-how-to-use-tailwind)
   - [4.1 Colors](#41-colors)
     - [4.1.1 Basic usage](#411-basic-usage)
@@ -46,7 +45,9 @@ npx shadcn-ui@latest init
 
 ## 2.2 Config & Setup
 
-### 2.2.1 tailwind.config.js
+### 2.2.1 Config theme via tailwind.config.js
+
+- Some theme options to extend: `colors, fontSize, lineHeight, spacing`
 
 ```js
 // tailwind.config.js
@@ -55,30 +56,62 @@ npx shadcn-ui@latest init
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      // START: extend colors
+      colors: {
+        primary: {
+          light: '#FF204E',
+          dark: '#A0153E',
+          darker: '#5D0E41',
+        },
+        secondary: {
+          light: '#77B0AA',
+          dark: '#135D66',
+          darker: '#003C43',
+        },
+        light: '#FEFDED',
+      },
+      // END: extend colors
+
+      // START: extend typography
+      fontSize: {
+        small: '14px',
+        normal: '16px',
+        subtitle: '20px',
+        title: '24px',
+      },
+
+      lineHeight: {
+        normal: '24px',
+      },
+      // END: extend typography
+
+      // START: extend margin, padding, width, height, left, right, top, bottom
+      spacing: {
+        0: '0px',
+        1: '1px',
+        2: '2px',
+        4: '4px',
+        8: '8px',
+        12: '12px',
+        16: '16px',
+        32: '32px',
+      },
+      // END: extend margin, padding, width, height, left, right, top, bottom
+    },
   },
   plugins: [],
 }
 ```
 
-### 2.2.2 src/globals.css
-
-```css
-/* src/globals.css */
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
-# 3. How to setup base and components style using Functions and Directives?
+### 2.2.2. How to create styles?
 
 - [Functions and Directives](https://tailwindcss.com/docs/functions-and-directives)
 
-## 3.1 base
+#### 2.2.2.1 base
 
 - Injects Tailwind's base styles and any base styles registered by plugins.
-- Use `@layer base`
+- Use `@layer base` to style for `element selector`
 - Use `@apply` to reuse tailwind style
 
 ```css
@@ -90,25 +123,53 @@ export default {
     padding: 0;
     @apply border-border box-border overflow-x-hidden;
   }
-  html {
-    @apply bg-light text-secondary-darker;
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl font-bold text-primary-darker;
+  }
+  h2 {
+    @apply text-3xl font-bold text-primary-darker;
   }
   h3 {
-    @apply text-2xl text-primary-darker font-semibold;
+    @apply text-2xl font-semibold text-secondary-darker;
   }
 }
 ```
 
-## 3.2 components
+#### 2.2.2.2 components
 
 - Injects Tailwind's component classes and any component classes registered by plugins.
-- Use `@layer components`
+- Use `@layer components` to style for `class selector`
 - Use `@apply` to reuse tailwind style
+- We can use `nested style like scss` to style for each component module
 
 ```css
-/* src/globals.css */
+/* src/components/organisms/navbar/styles.css */
+
+@tailwind components;
 
 @layer components {
+  .nav-item {
+    @apply pb-2;
+
+    a {
+      @apply text-secondary-dark relative;
+      &.active {
+        @apply text-secondary-darker font-bold;
+      }
+      &::after {
+        @apply bg-secondary-dark absolute left-0 -bottom-4 w-0 h-1 transition-all duration-500 ease-in-out;
+        content: '';
+      }
+      &:hover {
+        &::after {
+          @apply w-full;
+        }
+      }
+    }
+  }
 }
 ```
 
@@ -143,6 +204,7 @@ export default {
      * Extend the default Tailwind CSS theme here
      */
     extend: {
+      // START: extend colors
       colors: {
         primary: {
           light: '#FF204E',
@@ -156,6 +218,7 @@ export default {
         },
         light: '#FEFDED',
       },
+      // END: extend colors
     },
   },
 }
@@ -215,6 +278,7 @@ export default {
      * Extend the default Tailwind CSS theme here
      */
     extend: {
+      // START: extend typography
       fontSize: {
         small: '14px',
         normal: '16px',
@@ -225,6 +289,7 @@ export default {
       lineHeight: {
         normal: '24px',
       },
+      // END: extend typography
     },
   },
 }

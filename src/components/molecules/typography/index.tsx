@@ -9,7 +9,7 @@ interface TypographyProps extends HTMLAttributes<HTMLDivElement> {}
 export const Typography: FC<TypographyProps> = ({ className, ...props }) => {
   return (
     <div className={clsx('typography', className)} {...props}>
-      <h3 className="title font-mono">Typography</h3>
+      <h1 className="font-mono">Typography</h1>
       <h1>Title 1</h1>
       <h2>Title 2</h2>
       <h3 className="text-xl font-bold">Title 3</h3>
